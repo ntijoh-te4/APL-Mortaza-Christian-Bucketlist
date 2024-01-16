@@ -15,7 +15,7 @@ const ItemList = () => {
       <h1>Items List</h1>
       <ul style={styles.ul}>
         {fakeItems.map((fakeItem) => (
-          <Item description={fakeItem.description}/>
+          <Item description={fakeItem.description} key={fakeItem.id}/>
         ))}
       </ul>
     </div>
