@@ -11,6 +11,12 @@ export default function App() {
     { id: 3, description: "Become president" },
   ]);
 
+  function addItem(item: object) {
+    const id = Math.floor(Math.random() * 10000);
+    const newItem = { id, ...item };
+    setItems([...fakeItems, newItem])
+  }
+
   function deleteItem(id: number): void {
     setItems(fakeItems.filter((fakeItem) => fakeItem.id !== id));
   }
@@ -18,7 +24,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <SearchBar />
-      <AddForm />
+      <AddForm onAdd={addItem} />
       <ItemList items={fakeItems} onDelete={deleteItem} />
     </View>
   );
