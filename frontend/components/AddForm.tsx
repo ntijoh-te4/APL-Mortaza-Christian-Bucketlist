@@ -1,12 +1,13 @@
-import React from 'react'
-
 const AddForm = () => {
   return (
-    <form>
+    <div>
+      <h1>Add Items</h1>
+      <form>
         <input type="text" />
         <button>Add item</button>
-    </form>
-  )
-}
+      </form>
+    </div>
+  );
+};
 
-export default AddForm
+export default AddForm;
