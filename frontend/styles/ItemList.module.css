@@ -1,3 +1,12 @@
+ul {
+    background-color: aqua;
+    padding: 1rem;
+}
+
 li {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    list-style: none;
     background-color: salmon;
 }
