@@ -1,9 +1,9 @@
-const Item = ({ description }) => {
+const Item = ({ description, onDelete  }) => {
 
   return (
     <li>
       <p>{description}</p>
-      <button>X</button>
+      <button onClick={onDelete}>X</button>
     </li>
   );
 };
