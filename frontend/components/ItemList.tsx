@@ -1,14 +1,14 @@
 import Item from "./Item";
 import styles from "../styles/ItemList.module.css";
 
-const ItemList = ({ fakeItems, onDelete }) => {
+const ItemList = ({ items, onDelete }) => {
 
   return (
     <div>
       <h1>Items List</h1>
       <ul style={styles.ul}>
-        {fakeItems.map((fakeItem) => (
-          <Item key={fakeItem.id} description={fakeItem.description} onDelete={onDelete} />
+        {items.map((item) => (
+          <Item key={item.id} item={item} onDelete={onDelete} />
         ))}
       </ul>
     </div>

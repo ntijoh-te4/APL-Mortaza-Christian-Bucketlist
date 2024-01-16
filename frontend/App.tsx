@@ -1,11 +1,10 @@
-import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import SearchBar from './components/SearchBar';
-import AddForm from './components/AddForm';
-import ItemList from './components/ItemList';
+import { useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import SearchBar from "./components/SearchBar";
+import AddForm from "./components/AddForm";
+import ItemList from "./components/ItemList";
 
 export default function App() {
-
   const [fakeItems, setItems] = useState([
     { id: 1, description: "Drive Jetski" },
     { id: 2, description: "Skydive" },
@@ -13,15 +12,14 @@ export default function App() {
   ]);
 
   function deleteItem(id: number): void {
-    console.log('delete', id)
+    setItems(fakeItems.filter((fakeItem) => fakeItem.id !== id));
   }
-
 
   return (
     <View style={styles.container}>
-      <SearchBar/>
-      <AddForm/>
-      <ItemList fakeItems={fakeItems} onDelete={deleteItem}/>
+      <SearchBar />
+      <AddForm />
+      <ItemList items={fakeItems} onDelete={deleteItem} />
     </View>
   );
 }
@@ -29,8 +27,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

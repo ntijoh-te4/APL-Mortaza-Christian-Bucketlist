@@ -1,9 +1,9 @@
-const Item = ({ description, onDelete  }) => {
+ const Item = ({ item, onDelete  }) => {
 
   return (
     <li>
-      <p>{description}</p>
-      <button onClick={onDelete}>X</button>
+      <p>{item.description}</p>
+      <button onClick={() => onDelete(item.id)}>X</button>
     </li>
   );
 };
