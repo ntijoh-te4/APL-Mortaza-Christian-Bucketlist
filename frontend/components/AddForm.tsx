@@ -10,6 +10,7 @@ const AddForm = ({ onAdd }) => {
       return
     }
     onAdd({description})
+    setDescription("")
   }
 
   return (
