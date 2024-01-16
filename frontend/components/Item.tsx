@@ -1,7 +1,4 @@
-const Item = ({description}) => {
-  // <li style={styles.li}>
-  //   <h3 key={fakeItem.id}>{fakeItem.description}</h3>
-  // </li>;
+const Item = ({ description }) => {
 
   return (
     <li>
