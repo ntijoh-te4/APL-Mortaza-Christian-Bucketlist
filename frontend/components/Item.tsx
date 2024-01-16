@@ -1,10 +1,14 @@
-const Item = () => {
-  return (
-    <div>
-        <p>description</p>
-        <button>X</button>
-    </div>
-  )
-}
+const Item = ({description}) => {
+  // <li style={styles.li}>
+  //   <h3 key={fakeItem.id}>{fakeItem.description}</h3>
+  // </li>;
 
-export default Item
+  return (
+    <li>
+      <p>{description}</p>
+      <button>X</button>
+    </li>
+  );
+};
+
+export default Item;
