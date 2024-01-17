@@ -17,6 +17,7 @@ const SearchBar = ({ items, setItems, initialItems }) => {
   };
 
   const reset = () => {
+    setSearched("")
     setItems(initialItems)
   }
 
