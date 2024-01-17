@@ -1,6 +1,12 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, FC } from "react";
 
-const SearchBar = ({ items, setItems, initialItems }) => {
+interface Props {
+  items: Array<object>;
+  setItems: any;
+  initialItems: Array<object>;
+}
+
+const SearchBar: FC<Props> = ({ items, setItems, initialItems }) => {
   const [searched, setSearched] = useState("");
 
   const search = (e) => {
@@ -13,12 +19,10 @@ const SearchBar = ({ items, setItems, initialItems }) => {
         item.description.toLowerCase().includes(searchTerm)
       );
       setItems(filteredItems);
-    }
-    else {
-      setItems(initialItems)
+    } else {
+      setItems(initialItems);
     }
     console.log(searchTerm);
-
   };
 
   const resetSearch = () => {
