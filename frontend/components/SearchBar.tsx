@@ -16,7 +16,7 @@ const SearchBar = ({ items, setItems, initialItems }) => {
     setItems(filteredItems);
   };
 
-  const reset = () => {
+  const resetSearch = () => {
     setSearched("");
     setItems(initialItems);
   };
@@ -31,7 +31,7 @@ const SearchBar = ({ items, setItems, initialItems }) => {
           onChange={(e) => setSearched(e.target.value)}
         />
       </form>
-      <button onClick={reset}>Reset</button>
+      <button onClick={resetSearch}>Reset</button>
     </div>
   );
 };
