@@ -8,12 +8,17 @@ const SearchBar = ({ items, setItems, initialItems }) => {
     const searchTerm = e.target.firstElementChild.value.toLowerCase();
     setSearched(searchTerm);
 
-    const filteredItems = items.filter((item) =>
-      item.description.toLowerCase().includes(searchTerm)
-    );
+    if (searchTerm !== "") {
+      const filteredItems = items.filter((item) =>
+        item.description.toLowerCase().includes(searchTerm)
+      );
+      setItems(filteredItems);
+    }
+    else {
+      setItems(initialItems)
+    }
     console.log(searchTerm);
 
-    setItems(filteredItems);
   };
 
   const resetSearch = () => {
@@ -26,7 +31,7 @@ const SearchBar = ({ items, setItems, initialItems }) => {
       <form onSubmit={search}>
         <input
           type="text"
-          placeholder="Vad sökes?"
+          placeholder="Search item..."
           value={searched}
           onChange={(e) => setSearched(e.target.value)}
         />
