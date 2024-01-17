@@ -10,27 +10,29 @@ const SearchBar = ({ items, setItems, initialItems }) => {
 
     const filteredItems = items.filter((item) =>
       item.description.toLowerCase().includes(searchTerm)
-      );
+    );
     console.log(searchTerm);
 
     setItems(filteredItems);
   };
 
   const reset = () => {
-    setSearched("")
-    setItems(initialItems)
-  }
+    setSearched("");
+    setItems(initialItems);
+  };
 
   return (
-    <form onSubmit={search}>
-      <input
-        type="text"
-        placeholder="Vad sökes?"
-        value={searched}
-        onChange={(e) => setSearched(e.target.value)}
-      />
+    <div>
+      <form onSubmit={search}>
+        <input
+          type="text"
+          placeholder="Vad sökes?"
+          value={searched}
+          onChange={(e) => setSearched(e.target.value)}
+        />
+      </form>
       <button onClick={reset}>Reset</button>
-    </form>
+    </div>
   );
 };
 
