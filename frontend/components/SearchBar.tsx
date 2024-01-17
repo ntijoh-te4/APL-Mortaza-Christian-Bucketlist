@@ -1,18 +1,19 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const SearchBar = ({ list }) => {
-  const [keyword, setKeyword] = useState("");
+const SearchBar = ({ items, setItems, initialItems }) => {
+  const [searched, setSearched] = useState("");
 
   const search = (e) => {
     e.preventDefault();
-    const searched = e.target.firstElementChild.value;
-    list.forEach((item) => {
-      if (item.description !== searched) {
-        item.hidden = true;
-      }
-    });
-    console.log('slutet');
-    
+    const searchTerm = e.target.firstElementChild.value.toLowerCase();
+    setSearched(searchTerm);
+
+    const filteredItems = items.filter((item) =>
+      item.description.toLowerCase().includes(searchTerm)
+      );
+    console.log(searchTerm);
+
+    setItems(filteredItems);
   };
 
   return (
@@ -20,8 +21,8 @@ const SearchBar = ({ list }) => {
       <input
         type="text"
         placeholder="Vad sökes?"
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
+        value={searched}
+        onChange={(e) => setSearched(e.target.value)}
       />
     </form>
   );

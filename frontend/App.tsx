@@ -5,17 +5,18 @@ import AddForm from "./components/AddForm";
 import ItemList from "./components/ItemList";
 
 export default function App() {
-  const [items, setItems] = useState([
-    // dessa nedanstaende ar fake men kommer besta av real items
+  const initialItems = [
     { id: 1, description: "Drive Jetski" },
     { id: 2, description: "Skydive" },
     { id: 3, description: "Become president" },
-  ]);
+  ];
+
+  const [items, setItems] = useState(initialItems);
 
   function addItem(item: object) {
     const id = Math.floor(Math.random() * 10000);
     const newItem = { id, ...item };
-    setItems([...items, newItem])
+    setItems([...items, newItem]);
   }
 
   function deleteItem(id: number): void {
@@ -24,7 +25,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <SearchBar list={items}/>
+      <SearchBar items={items} setItems={setItems} initialItems={initialItems}/>
       <AddForm onAdd={addItem} />
       <ItemList items={items} onDelete={deleteItem} />
     </View>
