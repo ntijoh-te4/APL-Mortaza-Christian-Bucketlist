@@ -4,10 +4,13 @@ FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g' | gre
 [ -z "$FILES" ] && exit 0
 
 # Run prettier on all selected files
-echo ">> RUNNING PRETTIER"
 cd frontend
+echo ">> RUNNING PRETTIER"
 echo "$FILES" | xargs npx prettier --write --ignore-path .gitignore
 echo ">> FINISHED PRETTIER"
+echo ">> RUNNING ESLINT"
+echo "$FILES" | xargs npx eslint --max-warnings 0 --ext .js,.ts,.jsx,.tsx --fix --ignore-path .gitignore
+echo ">> FINISHED ESLINT"
 
 # Add back the modified/prettified files to staging
 echo "$FILES" | xargs git add
