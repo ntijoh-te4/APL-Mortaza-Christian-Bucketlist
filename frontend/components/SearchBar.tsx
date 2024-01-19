@@ -1,15 +1,20 @@
-import { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC, BaseSyntheticEvent } from "react";
+
+type Item = {
+  id: number;
+  description: string;
+};
 
 interface Props {
-  items: Array<object>;
+  items: Item[];
   setItems: any;
-  initialItems: Array<object>;
+  initialItems: Item[];
 }
 
 const SearchBar: FC<Props> = ({ items, setItems, initialItems }) => {
   const [searched, setSearched] = useState("");
 
-  const search = (e) => {
+  const search = (e: BaseSyntheticEvent) => {
     e.preventDefault();
     const searchTerm = e.target.firstElementChild.value.toLowerCase();
     setSearched(searchTerm);
