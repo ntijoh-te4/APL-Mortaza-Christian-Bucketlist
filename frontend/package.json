@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "eslint --max-warnings 0 --ext .js,.ts,.jsx,.tsx --fix --ignore-path .gitignore ."
+    "lint": "eslint --max-warnings 0 --ext .js,.ts,.jsx,.tsx --fix --ignore-path .gitignore .",
+    "format": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
     "@expo/webpack-config": "^19.0.0",

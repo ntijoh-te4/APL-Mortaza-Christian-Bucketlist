@@ -1,0 +1,15 @@
+#!/bin/sh
+echo ">> RUNNING pre-commit GITHOOK in .githooks/"
+FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g' | grep -o 'frontend.*' | sed 's/frontend\///g')
+[ -z "$FILES" ] && exit 0
+
+# Run prettier on all selected files
+echo ">> RUNNING PRETTIER"
+cd frontend
+echo "$FILES" | xargs npx prettier --write --ignore-path .gitignore
+echo ">> FINISHED PRETTIER"
+
+# Add back the modified/prettified files to staging
+echo "$FILES" | xargs git add
+
+exit 0
