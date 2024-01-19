@@ -7,11 +7,13 @@ interface Props {
 }
 
 const Item: FC<Props> = ({ item, onDelete }) => {
-  return (
+  return item.isVisible ? (
     <li>
       <p>{item.description}</p>
       <button onClick={() => onDelete(item.id)}>X</button>
     </li>
+  ) : (
+    <></>
   );
 };
 

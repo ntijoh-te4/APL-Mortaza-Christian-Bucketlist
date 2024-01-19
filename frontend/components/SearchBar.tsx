@@ -15,14 +15,18 @@ const SearchBar: FC<Props> = ({ items, setItems, initialItems }) => {
     const searchTerm = e.target.firstElementChild.value.toLowerCase();
     setSearched(searchTerm);
 
-    if (searchTerm !== "") {
-      const filteredItems = items.filter((item) =>
-        item.description.toLowerCase().includes(searchTerm)
-      );
-      setItems(filteredItems);
-    } else {
-      setItems(initialItems);
-    }
+    const updatedItems = items.map((item) => {
+      return {
+        id: item.id,
+        description: item.description,
+        isVisible: (item.isVisible = item.description
+          .toLowerCase()
+          .includes(searchTerm)),
+      };
+    });
+    console.log(updatedItems);
+
+    setItems(updatedItems);
   };
 
   const resetSearch = () => {
