@@ -1,47 +1,23 @@
-import { useState, FC, BaseSyntheticEvent } from "react";
-import { TItem } from "../types/item";
+import { FC, BaseSyntheticEvent } from "react";
 
 interface Props {
-  items: TItem[];
-  setItems: (items: TItem[]) => void;
-  initialItems: TItem[];
+  setSearchTerm: (searchTerm: string) => void;
 }
 
-const SearchBar: FC<Props> = ({ items, setItems, initialItems }) => {
-  const [searched, setSearched] = useState("");
-
-  const search = (e: BaseSyntheticEvent) => {
+const SearchBar: FC<Props> = ({ setSearchTerm }) => {
+  function search(e: BaseSyntheticEvent): void {
     e.preventDefault();
     const searchTerm = e.target.value.toLowerCase();
-    setSearched(searchTerm);
-
-    const updatedItems = items.map((item) => {
-      return {
-        id: item.id,
-        description: item.description,
-        isVisible: (item.isVisible = item.description
-          .toLowerCase()
-          .includes(searchTerm)),
-      };
-    });
-    console.log(updatedItems);
-    setItems(updatedItems);
-  };
-
-  const resetSearch = () => {
-    setSearched("");
-    setItems(initialItems);
-  };
+    setSearchTerm(searchTerm);
+  }
 
   return (
     <div>
       <input
         type="text"
         placeholder="Search item..."
-        value={searched}
         onChange={(e) => search(e)}
       />
-      <button onClick={resetSearch}>Reset</button>
     </div>
   );
 };

@@ -13,6 +13,7 @@ export default function App() {
   ];
 
   const [items, setItems] = useState(initialItems);
+  const [searchTerm, setSearchTerm] = useState("");
 
   function addItem(description: string): void {
     const id = Math.floor(Math.random() * 10000);
@@ -26,13 +27,14 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <SearchBar
+      <SearchBar setSearchTerm={setSearchTerm} />
+      <AddForm onAdd={addItem} />
+      <ItemList
         items={items}
         setItems={setItems}
-        initialItems={initialItems}
+        onDelete={deleteItem}
+        searchTerm={searchTerm}
       />
-      <AddForm onAdd={addItem} />
-      <ItemList items={items} onDelete={deleteItem} />
     </View>
   );
 }
