@@ -3,7 +3,7 @@ import { TItem } from "../types/item";
 
 interface Props {
   item: TItem;
-  onDelete: Function;
+  onDelete: (id: number) => void;
 }
 
 const Item: FC<Props> = ({ item, onDelete }) => {

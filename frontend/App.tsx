@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import SearchBar from "./components/SearchBar";
 import AddForm from "./components/AddForm";
 import ItemList from "./components/ItemList";
@@ -14,7 +14,7 @@ export default function App() {
 
   const [items, setItems] = useState(initialItems);
 
-  function addItem(description: string) {
+  function addItem(description: string): void {
     const id = Math.floor(Math.random() * 10000);
     const newItem: TItem = { id, description };
     setItems([...items, newItem]);

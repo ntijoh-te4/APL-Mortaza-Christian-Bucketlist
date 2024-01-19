@@ -5,7 +5,7 @@ import { FC } from "react";
 
 interface Props {
   items: TItem[];
-  onDelete: Function;
+  onDelete: (id: number) => void;
 }
 
 const ItemList: FC<Props> = ({ items, onDelete }) => {

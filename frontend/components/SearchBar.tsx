@@ -1,9 +1,9 @@
-import { useState, useEffect, FC, BaseSyntheticEvent } from "react";
+import { useState, FC, BaseSyntheticEvent } from "react";
 import { TItem } from "../types/item";
 
 interface Props {
   items: TItem[];
-  setItems: any;
+  setItems: (items: TItem[]) => void;
   initialItems: TItem[];
 }
 
@@ -23,7 +23,6 @@ const SearchBar: FC<Props> = ({ items, setItems, initialItems }) => {
     } else {
       setItems(initialItems);
     }
-    console.log(searchTerm);
   };
 
   const resetSearch = () => {
