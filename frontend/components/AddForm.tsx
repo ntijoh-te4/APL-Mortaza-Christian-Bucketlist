@@ -1,15 +1,19 @@
-import { useState } from "react";
+import { BaseSyntheticEvent, FC, useState } from "react";
 
-const AddForm = ({ onAdd }) => {
+interface Props {
+  onAdd: Function
+}
+
+const AddForm: FC<Props> = ({ onAdd }) => {
   const [description, setDescription] = useState("");
 
-  function addInputText(e) {
+  function addInputText(e: BaseSyntheticEvent) {
     e.preventDefault()
     if (!description) {
       alert("Enter text in the input block")
       return
     }
-    onAdd({description})
+    onAdd(description)
     setDescription("")
   }
 

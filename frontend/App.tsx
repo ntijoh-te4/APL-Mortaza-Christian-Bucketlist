@@ -3,9 +3,10 @@ import { StyleSheet, Text, View } from "react-native";
 import SearchBar from "./components/SearchBar";
 import AddForm from "./components/AddForm";
 import ItemList from "./components/ItemList";
+import { TItem } from "./types/item"
 
 export default function App() {
-  const initialItems = [
+  const initialItems: TItem[] = [
     { id: 1, description: "Drive Jetski" },
     { id: 2, description: "Skydive" },
     { id: 3, description: "Become president" },
@@ -13,9 +14,9 @@ export default function App() {
 
   const [items, setItems] = useState(initialItems);
 
-  function addItem(item: object) {
+  function addItem(description: string) {
     const id = Math.floor(Math.random() * 10000);
-    const newItem = { id, ...item };
+    const newItem: TItem = { id, description };
     setItems([...items, newItem]);
   }
 

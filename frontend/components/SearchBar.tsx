@@ -1,14 +1,10 @@
 import { useState, useEffect, FC, BaseSyntheticEvent } from "react";
-
-type Item = {
-  id: number;
-  description: string;
-};
+import { TItem } from "../types/item";
 
 interface Props {
-  items: Item[];
+  items: TItem[];
   setItems: any;
-  initialItems: Item[];
+  initialItems: TItem[];
 }
 
 const SearchBar: FC<Props> = ({ items, setItems, initialItems }) => {

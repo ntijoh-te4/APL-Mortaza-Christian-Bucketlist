@@ -1,8 +1,14 @@
 import Item from "./Item";
 import styles from "../styles/ItemList.module.css";
+import { TItem } from "../types/item";
+import { FC } from "react";
 
-const ItemList = ({ items, onDelete }) => {
+interface Props {
+  items: TItem[];
+  onDelete: Function;
+}
 
+const ItemList: FC<Props> = ({ items, onDelete }) => {
   return (
     <div>
       <h1>Items List</h1>
