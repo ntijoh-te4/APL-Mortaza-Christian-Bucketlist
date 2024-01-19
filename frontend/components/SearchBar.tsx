@@ -12,7 +12,7 @@ const SearchBar: FC<Props> = ({ items, setItems, initialItems }) => {
 
   const search = (e: BaseSyntheticEvent) => {
     e.preventDefault();
-    const searchTerm = e.target.firstElementChild.value.toLowerCase();
+    const searchTerm = e.target.value.toLowerCase();
     setSearched(searchTerm);
 
     const updatedItems = items.map((item) => {
@@ -25,7 +25,6 @@ const SearchBar: FC<Props> = ({ items, setItems, initialItems }) => {
       };
     });
     console.log(updatedItems);
-
     setItems(updatedItems);
   };
 
@@ -36,14 +35,12 @@ const SearchBar: FC<Props> = ({ items, setItems, initialItems }) => {
 
   return (
     <div>
-      <form onSubmit={search}>
-        <input
-          type="text"
-          placeholder="Search item..."
-          value={searched}
-          onChange={(e) => setSearched(e.target.value)}
-        />
-      </form>
+      <input
+        type="text"
+        placeholder="Search item..."
+        value={searched}
+        onChange={(e) => search(e)}
+      />
       <button onClick={resetSearch}>Reset</button>
     </div>
   );
