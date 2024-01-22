@@ -1,5 +1,5 @@
 import Item from "./Item";
-import styles from "../styles/ItemList.module.css";
+// import styles from "../styles/ItemList.module.css";
 import { TItem } from "../types/item";
 import { FC, useEffect } from "react";
 
@@ -38,7 +38,7 @@ const ItemList: FC<Props> = ({ items, setItems, onDelete, searchTerm }) => {
   return (
     <div>
       <h1>Items List</h1>
-      <ul style={styles.ul}>
+      <ul>
         <Items></Items>
       </ul>
     </div>
