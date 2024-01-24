@@ -4,7 +4,6 @@ cd frontend
 npm i
 npm run web
 
-cd ..
-# for running run backend in future
-# cd backend
-
+cd ../backend
+dotnet restore
+dotnet run dev --launch-profile https
