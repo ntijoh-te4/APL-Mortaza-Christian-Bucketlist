@@ -1,3 +1,4 @@
+using Bucketlist.DatabaseInitializer;
 using Bucketlist.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,8 +30,17 @@ builder.Services.AddDbContext<BucketlistContext>(opt =>
     opt.UseNpgsql(connectionString);
 });
 
-
 var app = builder.Build();
+
+if (args.Length == 1) {
+    if (args.Contains("migrate")) {
+        DatabaseInitializer.Migrate(app.Services);
+        return 0;
+    } else if (args.Contains("seed")) {
+        DatabaseInitializer.Seed(app.Services);
+        return 0;
+    }
+}
 
 if (app.Environment.IsDevelopment())
 {
