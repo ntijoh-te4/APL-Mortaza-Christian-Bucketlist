@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bucketlist", "Bucketlist\Bucketlist.csproj", "{9C60B8F7-C536-45EF-9EFB-5AF2C850DF33}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bucketlist", "backend\Bucketlist.csproj", "{9C60B8F7-C536-45EF-9EFB-5AF2C850DF33}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
