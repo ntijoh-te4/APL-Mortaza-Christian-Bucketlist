@@ -24,4 +24,4 @@ activate git hook `git config --local core.hooksPath .githooks/`
 
 - Set [secret storage manager](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-8.0&tabs=linux) variable DbPassword to your database password `dotnet user-secrets set "DbPassword" "[ DATABASE_PASSWORD ]"`
 
-- Access database through psql `psql -h localhost -U postgres -d postgres -c "CREATE DATABASE bucketlist"`
+- Access database through psql `psql -h localhost -U postgres -d postgres -c "CREATE DATABASE bucketlist;"`
