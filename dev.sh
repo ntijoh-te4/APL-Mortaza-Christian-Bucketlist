@@ -6,4 +6,4 @@ npm run web &
 
 cd ../backend
 dotnet restore
-dotnet run dev --launch-profile https
+dotnet watch run dev --launch-profile https
