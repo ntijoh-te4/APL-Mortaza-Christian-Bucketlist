@@ -2,7 +2,7 @@
 
 cd frontend
 npm i
-npm run web
+npm run web &
 
 cd ../backend
 dotnet restore
