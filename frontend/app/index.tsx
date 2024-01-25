@@ -1,23 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import SearchBar from "../components/SearchBar";
 import AddForm from "../components/AddForm";
 import ItemList from "../components/ItemList";
-import { TItem } from "../types/item";
+import { TItem, TItemTemplate } from "../types/item";
+
+function toDefaults(items: TItemTemplate[]): TItem[] {
+  return items.map((item) => {
+    return {
+      ...item,
+      isVisible: true,
+    };
+  });
+}
+
+async function getItems(): Promise<TItem[]> {
+  const res = await fetch("https://localhost:7148/api/TodoItems");
+  const data = await res.json();
+  const items = toDefaults(await data);
+  return items;
+}
 
 export default function App() {
-  const initialItems: TItem[] = [
-    { id: 1, description: "Drive Jetski", isVisible: true },
-    { id: 2, description: "Skydive", isVisible: true },
-    { id: 3, description: "Become president", isVisible: true },
-  ];
-
-  const [items, setItems] = useState(initialItems);
+  const [items, setItems] = useState<TItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    const fetchInitialItems = async () => {
+      const initialItems = await getItems();
+      setItems(initialItems);
+    };
+
+    fetchInitialItems();
+  }, []); // Empty dependency array ensures the effect runs only once on mount
 
   function addItem(description: string): void {
     const id = Math.floor(Math.random() * 10000);
-    const newItem: TItem = { id, description, isVisible: true };
+    const newItem: TItem = {
+      id,
+      description,
+      isVisible: true,
+      isComplete: false,
+    };
     setItems([...items, newItem]);
   }
 
