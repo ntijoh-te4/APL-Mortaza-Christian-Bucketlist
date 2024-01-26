@@ -9,13 +9,11 @@ echo ">> RUNNING PRETTIER"
 echo $FILES | xargs npx prettier --write --ignore-path .gitignore
 echo ">> FINISHED PRETTIER"
 
-FILES_TO_LINT=$(echo $FILES | egrep -o '.*\.(ts|js|tsx|jsx)(\n|$)')
-
 echo ">> RUNNING ESLINT"
-echo $FILES_TO_LINT | xargs npx eslint --max-warnings 0 --ext .js,.ts,.jsx,.tsx --fix --ignore-path .gitignore
+echo $FILES | xargs npx eslint --max-warnings 0 --ext .js,.ts,.jsx,.tsx --fix --ignore-path .gitignore
 echo ">> FINISHED ESLINT"
-echo ">> RUNNING TSC"
-echo $FILES_TO_LINT | xargs npx tsc --noEmit --jsx
+echo ">> RUNNING TSC (on all files)"
+npx tsc --noEmit -p tsconfig.json
 echo ">> FINISHED TSC"
 
 # Add back the modified/prettified files to staging
