@@ -92,6 +92,7 @@ namespace Bucketlist.Controllers
         }
 
         // DELETE: api/TodoItems/5
+        [EnableCors]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodoItem(long id)
         {

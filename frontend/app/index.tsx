@@ -60,8 +60,27 @@ export default function App() {
     console.log(await postNewItem.json());
   }
 
-  function deleteItem(id: number): void {
-    setItems(items.filter((fakeItem) => fakeItem.id !== id));
+  async function deleteItem(id: number): Promise<void> {
+    const deleteItemRequest: Response = await fetch(
+      `https://localhost:7148/api/TodoItems/${id}`,
+      {
+        method: "DELETE",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify({ id }),
+      },
+    );
+
+    if (deleteItemRequest.ok) {
+      setItems(await getItems());
+      return;
+    }
   }
 
   return (
