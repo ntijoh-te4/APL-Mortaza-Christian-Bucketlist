@@ -6,13 +6,19 @@ FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g' | gre
 # Run prettier on all selected files
 cd frontend
 echo ">> RUNNING PRETTIER"
-echo "$FILES" | xargs npx prettier --write --ignore-path .gitignore
+echo $FILES | xargs npx prettier --write --ignore-path .gitignore
 echo ">> FINISHED PRETTIER"
+
+FILES_TO_LINT=$(echo $FILES | egrep -o '.*\.(ts|js|tsx|jsx)(\n|$)')
+
 echo ">> RUNNING ESLINT"
-echo "$FILES" | xargs npx eslint --max-warnings 0 --ext .js,.ts,.jsx,.tsx --fix --ignore-path .gitignore
+echo $FILES_TO_LINT | xargs npx eslint --max-warnings 0 --ext .js,.ts,.jsx,.tsx --fix --ignore-path .gitignore
 echo ">> FINISHED ESLINT"
+echo ">> RUNNING TSC"
+echo $FILES_TO_LINT | xargs npx tsc --noEmit 
+echo ">> FINISHED TSC"
 
 # Add back the modified/prettified files to staging
-echo "$FILES" | xargs git add
+echo $FILES | xargs git add
 
 exit 0
