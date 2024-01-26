@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Bucketlist.Models;
+using Bucketlist.DTOs;
 
 namespace Bucketlist.Controllers
 {
@@ -75,8 +76,13 @@ namespace Bucketlist.Controllers
         // POST: api/TodoItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
+        public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItemsDTO todoItemDTO)
         {
+            var todoItem = new TodoItem
+            {
+                Description = todoItemDTO.Description,
+                IsComplete = todoItemDTO.IsComplete
+            };
             _context.TodoItems.Add(todoItem);
             await _context.SaveChangesAsync();
 
