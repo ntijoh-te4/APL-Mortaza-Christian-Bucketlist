@@ -17,7 +17,7 @@ function toDefaults(items: TItemTemplate[]): TItem[] {
 async function getItems(): Promise<TItem[]> {
   const res = await fetch("https://localhost:7148/api/TodoItems");
   const data = await res.json();
-  const items = toDefaults(await data);
+  const items = toDefaults(data);
   return items;
 }
 
@@ -34,15 +34,30 @@ export default function App() {
     fetchInitialItems();
   }, []); // Empty dependency array ensures the effect runs only once on mount
 
-  function addItem(description: string): void {
-    const id = Math.floor(Math.random() * 10000);
-    const newItem: TItem = {
-      id,
-      description,
-      isVisible: true,
-      isComplete: false,
-    };
-    setItems([...items, newItem]);
+  async function addItem(description: string): Promise<void> {
+    const postNewItem: Response = await fetch(
+      "https://localhost:7148/api/TodoItems",
+      {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        redirect: "follow",
+        referrerPolicy: "no-referrer",
+        body: JSON.stringify({ description }),
+      },
+    );
+
+    if (postNewItem.ok) {
+      const newItem = await postNewItem.json(); // assuming the API returns the new item
+      setItems([...items, newItem]);
+      return;
+    }
+
+    console.log(await postNewItem.json());
   }
 
   function deleteItem(id: number): void {

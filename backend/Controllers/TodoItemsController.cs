@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Bucketlist.Models;
 using Bucketlist.DTOs;
+using Microsoft.AspNetCore.Cors;
 
 namespace Bucketlist.Controllers
 {
@@ -75,6 +76,7 @@ namespace Bucketlist.Controllers
 
         // POST: api/TodoItems
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [EnableCors]
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItemsDTO todoItemDTO)
         {
