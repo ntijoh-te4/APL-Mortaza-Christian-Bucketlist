@@ -21,7 +21,6 @@ const ItemList: FC<Props> = ({ items, setItems, onDelete, searchTerm }) => {
           .includes(searchTerm)),
       };
     });
-    console.log(updatedItems);
     setItems(updatedItems);
   }, [searchTerm]);
 
