@@ -15,7 +15,7 @@ echo ">> RUNNING ESLINT"
 echo $FILES_TO_LINT | xargs npx eslint --max-warnings 0 --ext .js,.ts,.jsx,.tsx --fix --ignore-path .gitignore
 echo ">> FINISHED ESLINT"
 echo ">> RUNNING TSC"
-echo $FILES_TO_LINT | xargs npx tsc --noEmit 
+echo $FILES_TO_LINT | xargs npx tsc --noEmit --jsx
 echo ">> FINISHED TSC"
 
 # Add back the modified/prettified files to staging

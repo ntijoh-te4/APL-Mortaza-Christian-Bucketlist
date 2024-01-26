@@ -10,7 +10,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "eslint --max-warnings 0 --ext .js,.ts,.jsx,.tsx --fix --ignore-path .gitignore . && tsc --noEmit",
+    "lint": "eslint --max-warnings 0 --ext .js,.ts,.jsx,.tsx --fix --ignore-path .gitignore . && tsc --noEmit --jsx",
     "format": "prettier --write --ignore-path .gitignore ."
   },
   "dependencies": {
