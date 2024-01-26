@@ -22,6 +22,15 @@ if (dbPassword == null)
 
 string connectionString = $"{conStrNoPassword};password={dbPassword}";
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "development",
+    policy =>
+    {
+        policy.WithOrigins("http://localhost:8081");
+    });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -32,11 +41,15 @@ builder.Services.AddDbContext<BucketlistContext>(opt =>
 
 var app = builder.Build();
 
-if (args.Length == 1) {
-    if (args.Contains("migrate")) {
+if (args.Length == 1)
+{
+    if (args.Contains("migrate"))
+    {
         DatabaseInitializer.Migrate(app.Services);
         return 0;
-    } else if (args.Contains("seed")) {
+    }
+    else if (args.Contains("seed"))
+    {
         DatabaseInitializer.Seed(app.Services);
         return 0;
     }
@@ -46,8 +59,11 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors("development");
 }
 app.UseHttpsRedirection();
+
+
 app.UseAuthorization();
 app.MapControllers();
 
