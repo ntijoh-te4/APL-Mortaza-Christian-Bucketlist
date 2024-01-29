@@ -1,5 +1,5 @@
 import Item from "./Item";
-// import styles from "../styles/ItemList.module.css";
+import { StyleSheet, View, Text, FlatList } from "react-native";
 import { TItem } from "../types/item";
 import { FC, useEffect } from "react";
 
@@ -28,19 +28,28 @@ const ItemList: FC<Props> = ({ items, setItems, onDelete, searchTerm }) => {
   const filteredItems = items.filter((item: TItem) => item.isVisible);
 
   return (
-    <div>
-      <h1>Items List</h1>
-      <ul>
-        {filteredItems.length === 0 ? (
-          <p>No items available</p>
-        ) : (
-          filteredItems.map((item: TItem) => (
-            <Item key={item.id} item={item} onDelete={onDelete} />
-          ))
+    <View>
+      <Text style={{ fontSize: 48 }}>Items List</Text>
+      <FlatList
+        style={styles.ul}
+        data={filteredItems}
+        keyExtractor={(item: TItem) => item.id.toString()}
+        renderItem={({ item }: { item: TItem }) => (
+          <Item key={item.id} item={item} onDelete={onDelete} />
         )}
-      </ul>
-    </div>
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  ul: {
+    width: "100%",
+    height: 400,
+    overflow: "scroll",
+    backgroundColor: "aqua",
+    padding: 16,
+  },
+});
 
 export default ItemList;
