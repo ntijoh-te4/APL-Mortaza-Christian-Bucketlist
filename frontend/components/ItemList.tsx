@@ -16,6 +16,7 @@ const ItemList: FC<Props> = ({ items, setItems, onDelete, searchTerm }) => {
       return {
         id: item.id,
         description: item.description,
+        isComplete: item.isComplete,
         isVisible: (item.isVisible = item.description
           .toLowerCase()
           .includes(searchTerm)),
@@ -24,21 +25,19 @@ const ItemList: FC<Props> = ({ items, setItems, onDelete, searchTerm }) => {
     setItems(updatedItems);
   }, [searchTerm]);
 
-  function Items() {
-    return items.map((item: TItem) => {
-      if (item.isVisible) {
-        return <Item key={item.id} item={item} onDelete={onDelete} />;
-      } else {
-        return <></>;
-      }
-    });
-  }
+  const filteredItems = items.filter((item: TItem) => item.isVisible);
 
   return (
     <div>
       <h1>Items List</h1>
       <ul>
-        <Items></Items>
+        {filteredItems.length === 0 ? (
+          <p>No items available</p>
+        ) : (
+          filteredItems.map((item: TItem) => (
+            <Item key={item.id} item={item} onDelete={onDelete} />
+          ))
+        )}
       </ul>
     </div>
   );
