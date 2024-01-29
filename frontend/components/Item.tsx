@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { Button, Text, StyleSheet } from "react-native";
 import { FC } from "react";
 import { TItem } from "../types/item";
 
@@ -10,12 +10,10 @@ interface Props {
 const Item: FC<Props> = ({ item, onDelete }) => {
   return item.isVisible ? (
     <li style={styles.li}>
-      <p>{item.description}</p>
-      <button onClick={() => onDelete(item.id)}>X</button>
+      <Text>{item.description}</Text>
+      <Button title="X" onPress={() => onDelete(item.id)} />
     </li>
-  ) : (
-    <></>
-  );
+  ) : null;
 };
 
 const styles = StyleSheet.create({
