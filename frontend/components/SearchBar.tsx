@@ -1,4 +1,5 @@
 import { FC, BaseSyntheticEvent } from "react";
+import { StyleSheet, TextInput } from "react-native";
 
 interface Props {
   setSearchTerm: (searchTerm: string) => void;
@@ -12,14 +13,20 @@ const SearchBar: FC<Props> = ({ setSearchTerm }) => {
   }
 
   return (
-    <div>
-      <input
-        type="text"
-        placeholder="Search item..."
-        onChange={(e) => search(e)}
-      />
-    </div>
+    <TextInput
+      style={styles.input}
+      placeholder="Search item..."
+      onChange={(e) => search(e)}
+    />
   );
 };
 
+const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
+});
 export default SearchBar;
