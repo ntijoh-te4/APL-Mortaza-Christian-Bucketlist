@@ -29,7 +29,7 @@ const ItemList: FC<Props> = ({ items, setItems, onDelete, searchTerm }) => {
 
   return (
     <View>
-      <Text style={{ fontSize: 48 }}>Items List</Text>
+      <Text style={styles.h1}>Items List</Text>
       <FlatList
         style={styles.ul}
         data={filteredItems}
@@ -49,6 +49,11 @@ const styles = StyleSheet.create({
     overflow: "scroll",
     backgroundColor: "aqua",
     padding: 16,
+  },
+  h1: {
+    fontSize: 48,
+    fontWeight: "bold",
+    marginBottom: 16,
   },
 });
 
