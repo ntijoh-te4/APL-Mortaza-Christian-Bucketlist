@@ -26,6 +26,7 @@ const AddForm: FC<Props> = ({ onAdd }) => {
         value={description}
         onChangeText={(text) => setDescription(text)}
         placeholder="Enter a todo!"
+        onSubmitEditing={addInputText}
       />
       <Button onPress={addInputText} title="Add Item" />
     </View>
