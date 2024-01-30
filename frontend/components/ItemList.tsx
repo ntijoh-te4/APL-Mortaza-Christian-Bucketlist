@@ -25,7 +25,11 @@ const ItemList: FC<Props> = ({ items, setItems, onDelete, searchTerm }) => {
     setItems(updatedItems);
   }, [searchTerm]);
 
-  const filteredItems = items.filter((item: TItem) => item.isVisible);
+  useEffect(() => {
+    filteredItems = items.filter((item: TItem) => item.isVisible);
+  }, [items]);
+
+  let filteredItems = items.filter((item: TItem) => item.isVisible);
 
   return (
     <View>

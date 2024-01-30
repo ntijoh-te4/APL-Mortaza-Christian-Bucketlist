@@ -4,6 +4,7 @@ import SearchBar from "../components/SearchBar";
 import AddForm from "../components/AddForm";
 import ItemList from "../components/ItemList";
 import { TItem, TItemTemplate } from "../types/item";
+import { TBackendItem } from "../types/backendItem";
 
 function toDefaults(items: TItemTemplate[]): TItem[] {
   return items.map((item) => {
@@ -52,7 +53,13 @@ export default function App() {
     );
 
     if (postNewItem.ok) {
-      const newItem = await postNewItem.json(); // assuming the API returns the new item
+      const backendItem: TBackendItem = await postNewItem.json();
+      const newItem: TItem = {
+        id: backendItem.id,
+        description: backendItem.description,
+        isComplete: backendItem.isComplete,
+        isVisible: true,
+      };
       setItems([...items, newItem]);
       return;
     }
