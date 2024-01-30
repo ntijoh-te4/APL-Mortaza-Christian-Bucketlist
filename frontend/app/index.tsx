@@ -85,7 +85,7 @@ export default function App() {
     );
 
     if (deleteItemRequest.ok) {
-      setItems(await getItems());
+      setItems(items.filter((item) => item.id != id));
       return;
     }
   }
