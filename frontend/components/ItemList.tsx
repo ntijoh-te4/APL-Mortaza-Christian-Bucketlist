@@ -1,4 +1,5 @@
 import Item from "./Item";
+import AddForm from "./AddForm";
 import { StyleSheet, View, Text, FlatList } from "react-native";
 import { TItem } from "../types/item";
 import { FC, useEffect } from "react";
@@ -7,10 +8,17 @@ interface Props {
   items: TItem[];
   setItems: (items: TItem[]) => void;
   onDelete: (id: number) => void;
+  onAdd: (description: string) => void;
   searchTerm: string;
 }
 
-const ItemList: FC<Props> = ({ items, setItems, onDelete, searchTerm }) => {
+const ItemList: FC<Props> = ({
+  items,
+  setItems,
+  onDelete,
+  onAdd,
+  searchTerm,
+}) => {
   useEffect(() => {
     const updatedItems = items.map((item) => {
       return {
@@ -32,16 +40,18 @@ const ItemList: FC<Props> = ({ items, setItems, onDelete, searchTerm }) => {
   let filteredItems = items.filter((item: TItem) => item.isVisible);
 
   return (
-    <View>
-      <Text style={styles.h1}>Items List</Text>
-      <FlatList
-        style={styles.ul}
-        data={filteredItems}
-        keyExtractor={(item: TItem) => item.id.toString()}
-        renderItem={({ item }: { item: TItem }) => (
-          <Item key={item.id} item={item} onDelete={onDelete} />
-        )}
-      />
+    <View style={{ backgroundColor: "lime", padding: 8 }}>
+      <Text style={styles.h1}>List Title</Text>
+      <View style={styles.ul}>
+        <AddForm onAdd={onAdd} />
+        <FlatList
+          data={filteredItems}
+          keyExtractor={(item: TItem) => item.id.toString()}
+          renderItem={({ item }: { item: TItem }) => (
+            <Item key={item.id} item={item} onDelete={onDelete} />
+          )}
+        />
+      </View>
     </View>
   );
 };
