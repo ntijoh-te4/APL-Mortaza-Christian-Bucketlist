@@ -40,10 +40,17 @@ public class DatabaseInitializer
 
     private static void SeedData(BucketlistContext context)
     {
+        TodoList[] todoLists = [
+            new TodoList { Name = "todolist 1"},
+            new TodoList { Name = "todolist 2"}
+        ];
+        
+        context.TodoLists.AddRange(todoLists);
+
         TodoItem[] todoItems = [
-            new TodoItem { Description = "Become the president"},
-            new TodoItem { Description = "Read Moby Dick"},
-            new TodoItem { Description = "Create more todo items", IsComplete = true }
+            new TodoItem { Title = "Become the president", TodoList = todoLists[0] },
+            new TodoItem { Description = "Read Moby Dick", TodoList = todoLists[1] },
+            new TodoItem { Description = "Create more todo items", IsComplete = true, TodoList = todoLists[0] }
         ];
 
         context.TodoItems.AddRange(todoItems);
