@@ -9,5 +9,5 @@ public class TodoItem
     public DateTime? Deadline { get; set; } = null;
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public TodoList TodoList { get; set;} = null!;
+    public TodoList TodoList { get; set; } = null!;
 }
