@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import SearchBar from "../components/SearchBar";
-import AddForm from "../components/AddForm";
 import ItemList from "../components/ItemList";
 import { TItem, TItemTemplate } from "../types/item";
 import { TBackendItem } from "../types/backendItem";
@@ -92,9 +91,13 @@ export default function App() {
 
   return (
     <View style={styles.container}>
+      <link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+      />
       <SearchBar setSearchTerm={setSearchTerm} />
-      <AddForm onAdd={addItem} />
       <ItemList
+        onAdd={addItem}
         items={items}
         setItems={setItems}
         onDelete={deleteItem}
