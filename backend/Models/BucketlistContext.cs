@@ -9,4 +9,10 @@ public class BucketlistContext(DbContextOptions<BucketlistContext> options) : Db
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) =>
         optionsBuilder.UseSnakeCaseNamingConvention();
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<TodoItem>().Property(e => e.CreatedAt).HasDefaultValueSql("now()");
+        modelBuilder.Entity<TodoList>().Property(e => e.CreatedAt).HasDefaultValueSql("now()");
+    }
 }
