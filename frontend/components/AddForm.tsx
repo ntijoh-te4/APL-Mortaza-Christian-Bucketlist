@@ -1,5 +1,5 @@
 import { BaseSyntheticEvent, FC, useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 interface Props {
   onAdd: (description: string) => void;
@@ -7,6 +7,16 @@ interface Props {
 
 const AddForm: FC<Props> = ({ onAdd }) => {
   const [description, setDescription] = useState("");
+  const [isHovered, setIsHovered] = useState(false);
+  const [addFormVisible, setAddFormVisible] = useState(false);
+
+  function handlePressIn() {
+    setIsHovered(true);
+  }
+
+  function handlePressOut() {
+    setIsHovered(false);
+  }
 
   function addInputText(e: BaseSyntheticEvent) {
     e.preventDefault();
@@ -18,26 +28,52 @@ const AddForm: FC<Props> = ({ onAdd }) => {
     setDescription("");
   }
 
+  function toggleAddForm() {
+    console.log("bananpaj");
+    setAddFormVisible(!addFormVisible);
+  }
+
   return (
     <View>
-      <Text style={styles.h1}>Add Items</Text>
-      <TextInput
-        style={styles.input}
-        value={description}
-        onChangeText={(text) => setDescription(text)}
-        placeholder="Enter a todo!"
-        onSubmitEditing={addInputText}
-      />
-      <Button onPress={addInputText} title="Add Item" />
+      <Pressable
+        onPress={toggleAddForm}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        style={[styles.touchable, isHovered && styles.hoveredTouchable]}
+      >
+        {isHovered ? (
+          <span className="material-symbols-outlined">add_circle</span>
+        ) : (
+          <span className="material-symbols-outlined">add</span>
+        )}
+        <Text>Add a task</Text>
+      </Pressable>
+      {addFormVisible ? (
+        <View>
+          <TextInput placeholder="Title" style={styles.input} />
+          <TextInput
+            style={styles.input}
+            value={description}
+            onChangeText={(text) => setDescription(text)}
+            placeholder="Enter Description"
+            onSubmitEditing={addInputText}
+          />
+        </View>
+      ) : null}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  h1: {
-    fontSize: 48,
-    fontWeight: "bold",
-    marginBottom: 16,
+  touchable: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "lightblue",
+    borderRadius: 5,
+  },
+  hoveredTouchable: {
+    backgroundColor: "white",
   },
   input: {
     height: 40,
