@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import SearchBar from "../components/SearchBar";
 import ItemList from "../components/ItemList";
+import AddNewList from "../components/AddNewList";
 import { TItem, TItemTemplate } from "../types/item";
 import { TBackendItem } from "../types/backendItem";
 
@@ -96,13 +97,16 @@ export default function App() {
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
       />
       <SearchBar setSearchTerm={setSearchTerm} />
-      <ItemList
-        onAdd={addItem}
-        items={items}
-        setItems={setItems}
-        onDelete={deleteItem}
-        searchTerm={searchTerm}
-      />
+      <View style={styles.listContainer}>
+        <ItemList
+          onAdd={addItem}
+          items={items}
+          setItems={setItems}
+          onDelete={deleteItem}
+          searchTerm={searchTerm}
+        />
+        <AddNewList />
+      </View>
     </View>
   );
 }
@@ -113,5 +117,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
+  },
+  listContainer: {
+    display: "flex",
+    flexDirection: "row",
   },
 });
