@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { FC, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
-const AddNewList = () => {
+const AddNewList: FC = () => {
   const [isPressed, setIsPressed] = useState(false);
 
   return (
