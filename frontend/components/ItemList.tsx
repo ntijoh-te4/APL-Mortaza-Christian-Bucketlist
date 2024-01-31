@@ -1,8 +1,15 @@
 import Item from "./Item";
 import AddForm from "./AddForm";
-import { StyleSheet, View, Text, FlatList } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  Pressable,
+  TextInput,
+} from "react-native";
 import { TItem } from "../types/item";
-import { FC, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 
 interface Props {
   items: TItem[];
@@ -19,6 +26,18 @@ const ItemList: FC<Props> = ({
   onAdd,
   searchTerm,
 }) => {
+  const [editing, setEditing] = useState(false);
+  const [listTitle, setListTitle] = useState("List Title");
+
+  const handleEditClick = () => {
+    setEditing(true);
+  };
+
+  const handleSave = () => {
+    // Save the edited title or perform any other action
+    setEditing(false);
+  };
+
   useEffect(() => {
     const updatedItems = items.map((item) => {
       return {
@@ -41,7 +60,21 @@ const ItemList: FC<Props> = ({
 
   return (
     <View style={{ backgroundColor: "lime", padding: 8 }}>
-      <Text style={styles.h1}>List Title</Text>
+      <View style={styles.listTitleRow}>
+        {editing ? (
+          <TextInput
+            style={styles.h2}
+            value={listTitle}
+            onChangeText={(text) => setListTitle(text)}
+            onSubmitEditing={handleSave}
+          />
+        ) : (
+          <Pressable onPress={handleEditClick}>
+            <Text style={styles.h2}>{listTitle}</Text>
+          </Pressable>
+        )}
+        <span className="material-symbols-outlined">more_vert</span>
+      </View>
       <View style={styles.ul}>
         <AddForm onAdd={onAdd} />
         <FlatList
@@ -64,10 +97,16 @@ const styles = StyleSheet.create({
     backgroundColor: "aqua",
     padding: 16,
   },
-  h1: {
-    fontSize: 48,
+  h2: {
+    fontSize: 36,
     fontWeight: "bold",
     marginBottom: 16,
+  },
+  listTitleRow: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "baseline",
   },
 });
 
