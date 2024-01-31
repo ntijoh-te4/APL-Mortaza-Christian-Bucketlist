@@ -91,7 +91,7 @@ const ItemList: FC<Props> = ({
 
 const styles = StyleSheet.create({
   ul: {
-    width: "100%",
+    width: 300,
     height: 400,
     overflow: "scroll",
     backgroundColor: "aqua",
