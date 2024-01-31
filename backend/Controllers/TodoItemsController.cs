@@ -1,116 +1,89 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+using Bucketlist.DTOs;
+using Bucketlist.Models;
+
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Bucketlist.Models;
-using Bucketlist.DTOs;
-using Microsoft.AspNetCore.Cors;
 
-namespace Bucketlist.Controllers
+namespace Bucketlist.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+[Produces("application/json")]
+public class TodoItemsController(BucketlistContext context) : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class TodoItemsController : ControllerBase
+    private readonly BucketlistContext _context = context;
+
+    [HttpGet("{id:long}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(TodoItemResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetTodoItem([FromRoute] long id)
     {
-        private readonly BucketlistContext _context;
+        TodoItem? todoItem = await _context.TodoItems.FindAsync(id);
 
-        public TodoItemsController(BucketlistContext context)
+        return todoItem == null ? NotFound() : Ok(todoItem);
+    }
+
+
+    [HttpPatch("{id:long}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> PatchTodoItem([FromRoute] long id, [FromBody] PatchTodoItemRequest request)
+    {
+        TodoItem? todoItem = await _context.TodoItems.FindAsync(id);
+
+        if (todoItem == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        // GET: api/TodoItems
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
+        todoItem.Title = request.Title ?? todoItem.Title;
+        todoItem.Description = request.Description ?? todoItem.Description;
+        todoItem.IsComplete = request.IsComplete ?? todoItem.IsComplete;
+        todoItem.Deadline = request.Deadline ?? todoItem.Deadline;
+
+        _context.Entry(todoItem).State = EntityState.Modified;
+
+        try
         {
-            return await _context.TodoItems.ToListAsync();
+            await _context.SaveChangesAsync();
         }
-
-        // GET: api/TodoItems/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TodoItem>> GetTodoItem(long id)
+        catch (DbUpdateConcurrencyException)
         {
-            var todoItem = await _context.TodoItems.FindAsync(id);
-
-            if (todoItem == null)
+            if (!TodoItemExists(id))
             {
                 return NotFound();
             }
-
-            return todoItem;
-        }
-
-        // PUT: api/TodoItems/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(long id, TodoItem todoItem)
-        {
-            if (id != todoItem.Id)
+            else
             {
-                return BadRequest();
+                throw;
             }
-
-            _context.Entry(todoItem).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!TodoItemExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
-        // POST: api/TodoItems
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [EnableCors]
-        [HttpPost]
-        public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItemsDTO todoItemDTO)
+        return NoContent();
+    }
+
+    [EnableCors]
+    [HttpDelete("{id:long}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteTodoItem(long id)
+    {
+        var todoItem = await _context.TodoItems.FindAsync(id);
+        
+        if (todoItem == null)
         {
-            var todoItem = new TodoItem
-            {
-                Description = todoItemDTO.Description,
-                IsComplete = todoItemDTO.IsComplete
-            };
-            _context.TodoItems.Add(todoItem);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
+            return NotFound();
         }
 
-        // DELETE: api/TodoItems/5
-        [EnableCors]
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTodoItem(long id)
-        {
-            var todoItem = await _context.TodoItems.FindAsync(id);
-            if (todoItem == null)
-            {
-                return NotFound();
-            }
+        _context.TodoItems.Remove(todoItem);
+        await _context.SaveChangesAsync();
 
-            _context.TodoItems.Remove(todoItem);
-            await _context.SaveChangesAsync();
+        return NoContent();
+    }
 
-            return NoContent();
-        }
-
-        private bool TodoItemExists(long id)
-        {
-            return _context.TodoItems.Any(e => e.Id == id);
-        }
+    private bool TodoItemExists(long id)
+    {
+        return _context.TodoItems.Any(e => e.Id == id);
     }
 }
