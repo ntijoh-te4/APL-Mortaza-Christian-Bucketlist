@@ -11,7 +11,13 @@ const OptionsMenu: FC<Props> = ({ options, icons, isItemList }) => {
   const sortOptions = ["Due Date", "Alphabetical", "Last Updated"];
 
   return (
-    <View style={{ backgroundColor: "lightgrey", padding: 12 }}>
+    <View
+      style={{
+        backgroundColor: "lightgrey",
+        padding: 12,
+        height: isItemList ? 350 : 200,
+      }}
+    >
       {isItemList ? (
         <View>
           <Text style={{ fontSize: 16 }}>Sort by...</Text>
@@ -37,6 +43,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     padding: 8,
+    alignItems: "center",
   },
   h2: {
     fontSize: 24,
