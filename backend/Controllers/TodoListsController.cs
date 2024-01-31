@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Bucketlist.Controllers;
 [ApiController]
 [Route("api/[controller]")]
-[Produces("application/json")]
+[Produces("application/json")] 
 public class TodoListsController(BucketlistContext context) : ControllerBase
 {
     private readonly BucketlistContext _context = context;

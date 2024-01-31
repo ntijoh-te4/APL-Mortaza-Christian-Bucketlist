@@ -22,7 +22,7 @@ interface Props {
 const ItemList: FC<Props> = ({
   items,
   setItems,
-  onDelete,
+  onDelete, 
   onAdd,
   searchTerm,
 }) => {

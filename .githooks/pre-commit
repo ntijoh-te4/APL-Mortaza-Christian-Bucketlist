@@ -1,22 +1,33 @@
 #!/bin/sh
 echo ">> RUNNING pre-commit GITHOOK in .githooks/"
-FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g' | grep -o 'frontend.*' | sed 's/frontend\///g')
-[ -z "$FILES" ] && exit 0
+FRONTEND_FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g' | grep -o 'frontend.*' | sed 's/frontend\///g')
 
-# Run prettier on all selected files
-cd frontend
-echo ">> RUNNING PRETTIER"
-echo $FILES | xargs npx prettier --write --ignore-path .gitignore
-echo ">> FINISHED PRETTIER"
+if (( ${#FRONTEND_FILES} > 1 )); then
+    cd frontend
+    echo ">> RUNNING PRETTIER"
+    echo $FRONTEND_FILES | xargs npx prettier --write --ignore-path .gitignore
+    echo ">> FINISHED PRETTIER"
 
-echo ">> RUNNING ESLINT"
-echo $FILES | xargs npx eslint --max-warnings 0 --ext .js,.ts,.jsx,.tsx --fix --ignore-path .gitignore
-echo ">> FINISHED ESLINT"
-echo ">> RUNNING TSC (on all files)"
-npx tsc --noEmit -p tsconfig.json
-echo ">> FINISHED TSC"
+    echo ">> RUNNING ESLINT"
+    echo $FRONTEND_FILES | xargs npx eslint --max-warnings 0 --ext .js,.ts,.jsx,.tsx --fix --ignore-path .gitignore
+    echo ">> FINISHED ESLINT"
+    echo ">> RUNNING TSC (on all FRONTEND_FILES)"
+    npx tsc --noEmit -p tsconfig.json
+    echo ">> FINISHED TSC"
 
-# Add back the modified/prettified files to staging
-echo $FILES | xargs git add
+    echo $FRONTEND_FILES | xargs git add
+fi
 
+BACKEND_FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g' | grep -o 'backend.*' | sed 's/backend\///g')
+
+if (( ${#BACKEND_FILES} > 0 )); then
+    cd ../backend
+    echo ">> RUNNING DOTNET FORMAT"
+    echo $BACKEND_FILES | xargs dotnet format --include
+    echo ">> FINISHED DOTNET FORMAT"
+    
+    echo $BACKEND_FILES | xargs git add
+fi
+
+echo ">> FINISHED pre-commit GITHOOK in .githooks/"
 exit 0
