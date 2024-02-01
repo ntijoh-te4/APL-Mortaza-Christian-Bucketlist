@@ -16,7 +16,8 @@ function toDefaults(items: TItemTemplate[]): TItem[] {
 }
 
 async function getItems(): Promise<TItem[]> {
-  const res = await fetch("https://localhost:7148/api/TodoItems");
+  // fetching only from todolist with id = 1
+  const res = await fetch("https://localhost:7148/api/TodoLists/1/TodoItems");
   const data = await res.json();
   const items = toDefaults(data);
   return items;
