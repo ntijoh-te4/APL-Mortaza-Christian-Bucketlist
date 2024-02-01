@@ -25,6 +25,51 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
         return Ok(response);
     }
 
+    [HttpGet("{id:long}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(TodoListPreviewResponse), StatusCodes.Status200OK)]
+    public async Task<ActionResult<TodoListPreviewResponse>> GetTodoListPreview([FromRoute] long id)
+    {
+        TodoList? todoList = await _context.TodoLists.FindAsync(id);
+
+        if (todoList == null)
+        {
+            return NotFound();
+        }
+
+        TodoListPreviewResponse response = new(
+            Id: todoList.Id,
+            Name: todoList.Name
+        );
+
+        return Ok(response);
+    }
+
+    [EnableCors]
+    [HttpPost]
+    [ProducesResponseType(typeof(CreatedTodoListResponse), StatusCodes.Status201Created)]
+    public async Task<ActionResult<CreatedTodoListResponse>> PostTodoList([FromBody] PostTodoListRequest request)
+    {
+        TodoList todoList = new()
+        {
+            Name = request.Name
+        };
+
+        _context.TodoLists.Add(todoList);
+        await _context.SaveChangesAsync();
+
+        CreatedTodoListResponse createdResourceResponse = new(
+            Id: todoList.Id,
+            Name: todoList.Name
+        );
+
+        return CreatedAtAction(
+            actionName: nameof(GetTodoListPreviews),
+            routeValues: new { id = todoList.Id },
+            value: createdResourceResponse
+        );
+    }
+
     [HttpGet("{id:long}/TodoItems")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(IEnumerable<TodoItemResponse>), StatusCodes.Status200OK)]
@@ -50,7 +95,7 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
     [EnableCors]
     [HttpPost("{id:long}/TodoItems")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(PostTodoItemResponse), StatusCodes.Status201Created)]
     public async Task<IActionResult> PostTodoItem([FromRoute] long id, [FromBody] PostTodoItemRequest request)
     {
         TodoList? todoList = await _context.TodoLists.FindAsync(id);
