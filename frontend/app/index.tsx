@@ -56,7 +56,11 @@ export default function App() {
       const backendItem: TBackendItem = await postNewItem.json();
       const newItem: TItem = {
         id: backendItem.id,
+        title: backendItem.title,
         description: backendItem.description,
+        createdAt: backendItem.createdAt,
+        updatedAt: backendItem.updatedAt,
+        deadline: backendItem.deadline,
         isComplete: backendItem.isComplete,
         isVisible: true,
       };
