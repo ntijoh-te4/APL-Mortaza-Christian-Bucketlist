@@ -13,6 +13,18 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
 {
     private readonly BucketlistContext _context = context;
 
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<TodoListPreviewResponse>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IEnumerable<TodoListPreviewResponse>>> GetTodoListPreviews()
+    {
+        IEnumerable<TodoListPreviewResponse> response = await _context.TodoLists
+            .Select(e => new TodoListPreviewResponse(
+                e.Id,
+                e.Name))
+            .ToArrayAsync();
+        return Ok(response);
+    }
+
     [HttpGet("{id:long}/TodoItems")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(IEnumerable<TodoItemResponse>), StatusCodes.Status200OK)]
