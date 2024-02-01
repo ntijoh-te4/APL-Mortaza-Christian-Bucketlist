@@ -19,29 +19,19 @@ const OptionsMenu: FC<Props> = ({ options, isItemList }) => {
   ];
 
   return (
-    <View
-      style={{
-        backgroundColor: "rgba(121, 121, 121, 0.5)",
-        padding: 12,
-        height: isItemList ? 350 : 200,
-        position: "absolute",
-        right: -180,
-        top: 40,
-        zIndex: 2,
-      }}
-    >
+    <View style={[styles.optionsMenu, { height: isItemList ? 350 : 200 }]}>
       {isItemList ? (
         <View>
-          <View style={{ display: "flex", flexDirection: "row" }}>
+          <View style={styles.flexRow}>
             <span className="material-symbols-outlined">sort</span>
-            <Text style={{ marginLeft: 8, fontSize: 16 }}>Sort by...</Text>
+            <Text style={styles.h3}>Sort by...</Text>
           </View>
           {sortOptions.map((sortOption: IOptions) => (
             <Pressable key={sortOption.title} style={styles.sortOptions}>
               <span className="material-symbols-outlined">
                 {sortOption.icon}
               </span>
-              <Text style={[styles.option && { fontSize: 16 }]}>
+              <Text style={[styles.option && styles.h3]}>
                 {sortOption.title}
               </Text>
             </Pressable>
@@ -58,6 +48,18 @@ const OptionsMenu: FC<Props> = ({ options, isItemList }) => {
   );
 };
 const styles = StyleSheet.create({
+  optionsMenu: {
+    backgroundColor: "rgba(121, 121, 121, 0.5)",
+    padding: 12,
+    position: "absolute",
+    right: -180,
+    top: 40,
+    zIndex: 2,
+  },
+  flexRow: {
+    display: "flex",
+    flexDirection: "row",
+  },
   sortOptions: {
     display: "flex",
     flexDirection: "row",
@@ -72,6 +74,10 @@ const styles = StyleSheet.create({
   },
   h2: {
     fontSize: 24,
+  },
+  h3: {
+    fontSize: 16,
+    marginLeft: 8,
   },
 });
 
