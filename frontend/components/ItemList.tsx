@@ -60,7 +60,7 @@ const ItemList: FC<Props> = ({
 
   let filteredItems = items.filter((item: TItem) => item.isVisible);
 
-  function showOptionsMenu() {
+  function toggleOptionsMenu() {
     setOptionsMenuVisible(!optionsMenuVisible);
   }
 
@@ -80,7 +80,10 @@ const ItemList: FC<Props> = ({
           </Pressable>
         )}
         <Pressable style={{ position: "relative" }}>
-          <span className="material-symbols-outlined" onClick={showOptionsMenu}>
+          <span
+            className="material-symbols-outlined"
+            onClick={toggleOptionsMenu}
+          >
             more_vert
           </span>
         </Pressable>
