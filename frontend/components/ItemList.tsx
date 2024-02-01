@@ -36,7 +36,6 @@ const ItemList: FC<Props> = ({
   };
 
   const handleSave = () => {
-    // Save the edited title or perform any other action
     setEditing(false);
   };
 
