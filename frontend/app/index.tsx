@@ -108,8 +108,12 @@ export default function App() {
         />
         <AddNewList />
         <OptionsMenu
-          options={["Edit", "Rename", "Set deadline", "Delete list"]}
-          icons={["edit", "send", "calendar_month", "delete"]}
+          options={[
+            { title: "Edit", icon: "edit" },
+            { title: "Rename", icon: "send" },
+            { title: "Set deadline", icon: "calendar_month" },
+            { title: "Delete list", icon: "delete" },
+          ]}
           isItemList={true}
         />
       </View>
