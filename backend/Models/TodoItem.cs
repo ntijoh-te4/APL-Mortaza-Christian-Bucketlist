@@ -1,4 +1,5 @@
 namespace Bucketlist.Models;
+
 public class TodoItem : BaseEntity
 {
     public long Id { get; set; }

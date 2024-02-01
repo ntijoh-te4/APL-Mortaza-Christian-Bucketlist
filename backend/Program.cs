@@ -2,7 +2,9 @@ using Bucketlist.DatabaseInitializer;
 using Bucketlist.Models;
 
 using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
 string? conStrNoPassword = builder.Configuration.GetConnectionString("Bucketlist");
 if (conStrNoPassword == null)
 {
@@ -16,16 +18,16 @@ if (dbPassword == null)
     return 1;
 }
 string connectionString = $"{conStrNoPassword};password={dbPassword}";
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: "development",
-    policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-});
+
+builder.Services.AddCors(options => options.AddPolicy(name: "development",
+    policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<BucketlistContext>(opt => opt.UseNpgsql(connectionString));
+
 var app = builder.Build();
+
 if (args.Length == 1)
 {
     if (args.Contains("migrate"))
@@ -39,6 +41,7 @@ if (args.Length == 1)
         return 0;
     }
 }
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -46,8 +49,8 @@ if (app.Environment.IsDevelopment())
     app.UseCors("development");
 }
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
+
 return 0;

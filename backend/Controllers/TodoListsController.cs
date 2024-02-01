@@ -4,13 +4,16 @@ using Bucketlist.Models;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
 namespace Bucketlist.Controllers;
+
 [ApiController]
 [Route("api/[controller]")]
 [Produces("application/json")]
 public class TodoListsController(BucketlistContext context) : ControllerBase
 {
     private readonly BucketlistContext _context = context;
+
     [HttpGet("{id:long}/TodoItems")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(TodoItemResponse[]), StatusCodes.Status200OK)]
@@ -32,6 +35,7 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
                 ).FirstOrDefaultAsync();
         return response == null ? NotFound() : Ok(response);
     }
+
     [EnableCors]
     [HttpPost("{id:long}/TodoItems")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
