@@ -5,7 +5,6 @@ import ItemList from "../components/ItemList";
 import AddNewList from "../components/AddNewList";
 import { TItem, TItemTemplate } from "../types/item";
 import { TBackendItem } from "../types/backendItem";
-import OptionsMenu from "../components/OptionsMenu";
 
 function toDefaults(items: TItemTemplate[]): TItem[] {
   return items.map((item) => {
@@ -107,15 +106,6 @@ export default function App() {
           searchTerm={searchTerm}
         />
         <AddNewList />
-        <OptionsMenu
-          options={[
-            { title: "Edit", icon: "edit" },
-            { title: "Rename", icon: "send" },
-            { title: "Set deadline", icon: "calendar_month" },
-            { title: "Delete list", icon: "delete" },
-          ]}
-          isItemList={true}
-        />
       </View>
     </View>
   );
