@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bucketlist.DatabaseInitializer;
 
-public class DatabaseInitializer
+public static class DatabaseInitializer
 {
     public static void Migrate(IServiceProvider serviceProvider)
     {
