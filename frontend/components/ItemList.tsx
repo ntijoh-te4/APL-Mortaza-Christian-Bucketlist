@@ -1,5 +1,6 @@
 import Item from "./Item";
 import AddForm from "./AddForm";
+import OptionsMenu from "./OptionsMenu";
 import {
   StyleSheet,
   View,
@@ -22,12 +23,13 @@ interface Props {
 const ItemList: FC<Props> = ({
   items,
   setItems,
-  onDelete, 
+  onDelete,
   onAdd,
   searchTerm,
 }) => {
   const [editing, setEditing] = useState(false);
   const [listTitle, setListTitle] = useState("List Title");
+  const [optionsMenuVisible, setOptionsMenuVisible] = useState(false);
 
   const handleEditClick = () => {
     setEditing(true);
@@ -58,6 +60,10 @@ const ItemList: FC<Props> = ({
 
   let filteredItems = items.filter((item: TItem) => item.isVisible);
 
+  function showOptionsMenu() {
+    setOptionsMenuVisible(!optionsMenuVisible);
+  }
+
   return (
     <View style={{ backgroundColor: "lime", padding: 8 }}>
       <View style={styles.listTitleRow}>
@@ -73,8 +79,23 @@ const ItemList: FC<Props> = ({
             <Text style={styles.h2}>{listTitle}</Text>
           </Pressable>
         )}
-        <span className="material-symbols-outlined">more_vert</span>
+        <Pressable style={{ position: "relative" }}>
+          <span className="material-symbols-outlined" onClick={showOptionsMenu}>
+            more_vert
+          </span>
+        </Pressable>
       </View>
+      {optionsMenuVisible ? (
+        <OptionsMenu
+          options={[
+            { title: "Edit", icon: "edit" },
+            { title: "Rename", icon: "send" },
+            { title: "Set deadline", icon: "calendar_month" },
+            { title: "Delete list", icon: "delete" },
+          ]}
+          isItemList={true}
+        />
+      ) : null}
       <View style={styles.ul}>
         <AddForm onAdd={onAdd} />
         <FlatList
