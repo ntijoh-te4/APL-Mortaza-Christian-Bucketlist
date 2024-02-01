@@ -15,10 +15,10 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
 
     [HttpGet("{id:long}/TodoItems")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(TodoItemResponse[]), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<TodoItemResponse>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetTodoItems([FromRoute] long id)
     {
-        TodoItemResponse[]? response = await _context.TodoLists
+        IEnumerable<TodoItemResponse>? response = await _context.TodoLists
             .Where(e => e.Id == id)
             .Include(e => e.TodoItems)
             .Select(todoList => todoList.TodoItems
@@ -30,8 +30,8 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
                     todoItem.UpdatedAt,
                     todoItem.Deadline,
                     todoItem.IsComplete))
-                    .ToArray()
                 ).FirstOrDefaultAsync();
+
         return response == null ? NotFound() : Ok(response);
     }
 

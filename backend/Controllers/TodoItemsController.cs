@@ -19,7 +19,22 @@ public class TodoItemsController(BucketlistContext context) : ControllerBase
     public async Task<IActionResult> GetTodoItem([FromRoute] long id)
     {
         TodoItem? todoItem = await _context.TodoItems.FindAsync(id);
-        return todoItem == null ? NotFound() : Ok(todoItem);
+
+        if (todoItem == null)
+        {
+            return NotFound();
+        }
+
+        TodoItemResponse response = new(
+            Id: todoItem.Id,
+            Title: todoItem.Title,
+            Description: todoItem.Description,
+            CreatedAt: todoItem.CreatedAt,
+            UpdatedAt: todoItem.UpdatedAt,
+            Deadline: todoItem.Deadline,
+            IsComplete: todoItem.IsComplete);
+
+        return Ok(response);
     }
 
     [HttpPatch("{id:long}")]
