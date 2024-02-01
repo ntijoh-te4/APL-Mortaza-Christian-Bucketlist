@@ -4,6 +4,6 @@ export type TBackendItem = {
   description: string;
   createdAt: Date;
   updatedAt: Date;
-  Deadline?: Date;
+  deadline?: Date;
   isComplete: boolean;
 };

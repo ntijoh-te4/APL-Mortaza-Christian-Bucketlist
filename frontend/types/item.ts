@@ -4,7 +4,7 @@ export type TItem = {
   description: string;
   createdAt: Date;
   updatedAt: Date;
-  Deadline?: Date;
+  deadline?: Date;
   isComplete: boolean;
   isVisible: boolean;
 };
