@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Bucketlist.Models;
 
@@ -24,12 +25,12 @@ public class BucketlistContext(DbContextOptions<BucketlistContext> options) : Db
 
     private void AddTimestamps()
     {
-        var entityEntries = ChangeTracker
+        IEnumerable<EntityEntry> entityEntries = ChangeTracker
           .Entries()
           .Where(e => e.Entity is BaseEntity && (
             e.State == EntityState.Added
             || e.State == EntityState.Modified));
-        foreach (var entityEntry in entityEntries)
+        foreach (EntityEntry entityEntry in entityEntries)
         {
             DateTime now = DateTime.UtcNow;
             ((BaseEntity)entityEntry.Entity).UpdatedAt = now;
