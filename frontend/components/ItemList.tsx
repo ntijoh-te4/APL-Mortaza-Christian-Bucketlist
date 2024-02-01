@@ -62,7 +62,7 @@ const ItemList: FC<Props> = ({
   }
 
   return (
-    <View style={{ backgroundColor: "lime", padding: 8 }}>
+    <View style={styles.itemListContainer}>
       <View style={styles.listTitleRow}>
         {editing ? (
           <TextInput
@@ -76,7 +76,7 @@ const ItemList: FC<Props> = ({
             <Text style={styles.h2}>{listTitle}</Text>
           </Pressable>
         )}
-        <Pressable style={{ position: "relative" }}>
+        <Pressable style={styles.kebabMenu}>
           <span
             className="material-symbols-outlined"
             onClick={toggleOptionsMenu}
@@ -96,7 +96,7 @@ const ItemList: FC<Props> = ({
           isItemList={true}
         />
       ) : null}
-      <View style={styles.ul}>
+      <View style={styles.itemContainer}>
         <AddForm onAdd={onAdd} />
         <FlatList
           data={filteredItems}
@@ -111,11 +111,18 @@ const ItemList: FC<Props> = ({
 };
 
 const styles = StyleSheet.create({
-  ul: {
+  itemListContainer: {
+    borderStyle: "dashed",
+    borderColor: "black",
+    borderWidth: 2,
+  },
+  kebabMenu: {
+    position: "relative",
+  },
+  itemContainer: {
     width: 300,
     height: 400,
     overflow: "scroll",
-    backgroundColor: "aqua",
     padding: 16,
   },
   h2: {
