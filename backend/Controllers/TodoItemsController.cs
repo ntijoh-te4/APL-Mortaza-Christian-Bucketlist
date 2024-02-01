@@ -75,13 +75,12 @@ public class TodoItemsController(BucketlistContext context) : ControllerBase
         return NoContent();
     }
 
-    [EnableCors]
     [HttpDelete("{id:long}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteTodoItem([FromRoute] long id)
     {
-        var todoItem = await _context.TodoItems.FindAsync(id);
+        TodoItem? todoItem = await _context.TodoItems.FindAsync(id);
 
         if (todoItem == null)
         {
@@ -89,7 +88,7 @@ public class TodoItemsController(BucketlistContext context) : ControllerBase
         }
 
         _context.TodoItems.Remove(todoItem);
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
 
         return NoContent();
     }

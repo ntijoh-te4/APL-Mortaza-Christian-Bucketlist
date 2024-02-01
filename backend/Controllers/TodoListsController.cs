@@ -70,6 +70,24 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
         );
     }
 
+    [HttpDelete("{id:long}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> DeleteTodoList([FromRoute] long id)
+    {
+        TodoList? todoList = await _context.TodoLists.FindAsync(id);
+
+        if (todoList == null)
+        {
+            return NotFound();
+        }
+
+        _context.TodoLists.Remove(todoList);
+        _context.SaveChanges();
+
+        return NoContent();
+    }
+
     [HttpGet("{id:long}/TodoItems")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(IEnumerable<TodoItemResponse>), StatusCodes.Status200OK)]
