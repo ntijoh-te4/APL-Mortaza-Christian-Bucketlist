@@ -1,6 +1,5 @@
 using Bucketlist.DatabaseInitializer;
 using Bucketlist.Models;
-
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

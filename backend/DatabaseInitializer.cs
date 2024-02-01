@@ -1,5 +1,4 @@
 using Bucketlist.Models;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace Bucketlist.DatabaseInitializer;

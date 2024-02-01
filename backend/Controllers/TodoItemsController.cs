@@ -1,6 +1,5 @@
 using Bucketlist.DTOs;
 using Bucketlist.Models;
-
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
