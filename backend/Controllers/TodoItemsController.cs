@@ -79,7 +79,7 @@ public class TodoItemsController(BucketlistContext context) : ControllerBase
     [HttpDelete("{id:long}")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> DeleteTodoItem(long id)
+    public async Task<IActionResult> DeleteTodoItem([FromRoute] long id)
     {
         var todoItem = await _context.TodoItems.FindAsync(id);
 
