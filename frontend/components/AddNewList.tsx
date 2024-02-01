@@ -5,7 +5,7 @@ const AddNewList: FC = () => {
   const [isPressed, setIsPressed] = useState(false);
 
   return (
-    <View>
+    <View style={{ zIndex: -1 }}>
       <Pressable
         onPressIn={() => setIsPressed(true)}
         onPressOut={() => setIsPressed(false)}

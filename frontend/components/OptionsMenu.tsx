@@ -21,11 +21,12 @@ const OptionsMenu: FC<Props> = ({ options, isItemList }) => {
   return (
     <View
       style={{
-        backgroundColor: "rgba(121,121,121,0.5)",
+        backgroundColor: "rgba(121, 121, 121, 0.5)",
         padding: 12,
         height: isItemList ? 350 : 200,
         position: "absolute",
-        right: 40,
+        right: -180,
+        top: 40,
         zIndex: 2,
       }}
     >
