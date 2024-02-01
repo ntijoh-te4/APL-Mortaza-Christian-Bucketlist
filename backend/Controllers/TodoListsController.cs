@@ -42,18 +42,22 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
     public async Task<IActionResult> PostTodoItem([FromRoute] long id, [FromBody] PostTodoItemRequest request)
     {
         TodoList? todoList = await _context.TodoLists.FindAsync(id);
+
         if (todoList == null)
         {
             return NotFound();
         }
+
         TodoItem todoItem = new()
         {
             Title = request.Title,
             Description = request.Description ?? "",
             Deadline = request.Deadline ?? DateTime.MinValue
         };
+
         todoList.TodoItems.Add(todoItem);
         await _context.SaveChangesAsync();
+
         PostTodoItemResponse createdResourceResponse = new(
             Id: todoItem.Id,
             Title: todoItem.Title,
@@ -62,6 +66,7 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
             Deadline: todoItem.Deadline,
             TodoListId: todoList.Id
         );
+
         return CreatedAtAction(
             actionName: nameof(TodoItemsController.GetTodoItem),
             controllerName: "TodoItems",
