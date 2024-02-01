@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 namespace Bucketlist.Controllers;
 [ApiController]
-[Route("api/[controller]")] 
+[Route("api/[controller]")]
 [Produces("application/json")]
 public class TodoItemsController(BucketlistContext context) : ControllerBase
 {
