@@ -43,9 +43,7 @@ const ItemList: FC<Props> = ({
   useEffect(() => {
     const updatedItems = items.map((item) => {
       return {
-        id: item.id,
-        description: item.description,
-        isComplete: item.isComplete,
+        ...item,
         isVisible: (item.isVisible = item.description
           .toLowerCase()
           .includes(searchTerm)),
