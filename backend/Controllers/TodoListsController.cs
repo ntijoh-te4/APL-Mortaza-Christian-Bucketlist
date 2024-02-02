@@ -83,7 +83,7 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
         }
 
         _context.TodoLists.Remove(todoList);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }

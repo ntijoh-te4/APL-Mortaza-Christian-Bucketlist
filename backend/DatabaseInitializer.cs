@@ -37,7 +37,7 @@ public static class DatabaseInitializer
         context.Database.ExecuteSqlRaw("CREATE SCHEMA public;");
     }
 
-    private static void SeedData(BucketlistContext context)
+    private static async void SeedData(BucketlistContext context)
     {
         TodoList[] todoLists = [
             new TodoList { Name = "todolist 1" },
@@ -50,6 +50,6 @@ public static class DatabaseInitializer
             new TodoItem { Description = "Create more todo items", IsComplete = true, TodoList = todoLists[0] }
         ];
         context.TodoItems.AddRange(todoItems);
-        context.SaveChanges();
+        await context.SaveChangesAsync();
     }
 }
