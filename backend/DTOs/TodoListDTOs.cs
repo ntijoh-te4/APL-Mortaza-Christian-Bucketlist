@@ -9,7 +9,11 @@ public record PostTodoListRequest(
     string Name
 );
 
-public record CreatedTodoListResponse(
+public record PostTodoListResponse(
     long Id,
     string Name
+);
+
+public record PatchTodoListRequest(
+    string? Name
 );

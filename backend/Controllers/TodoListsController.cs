@@ -47,8 +47,8 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
 
     [EnableCors]
     [HttpPost]
-    [ProducesResponseType(typeof(CreatedTodoListResponse), StatusCodes.Status201Created)]
-    public async Task<ActionResult<CreatedTodoListResponse>> PostTodoList([FromBody] PostTodoListRequest request)
+    [ProducesResponseType(typeof(PostTodoListResponse), StatusCodes.Status201Created)]
+    public async Task<ActionResult<PostTodoListResponse>> PostTodoList([FromBody] PostTodoListRequest request)
     {
         TodoList todoList = new()
         {
@@ -58,7 +58,7 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
         _context.TodoLists.Add(todoList);
         await _context.SaveChangesAsync();
 
-        CreatedTodoListResponse createdResourceResponse = new(
+        PostTodoListResponse createdResourceResponse = new(
             Id: todoList.Id,
             Name: todoList.Name
         );
@@ -84,6 +84,41 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
 
         _context.TodoLists.Remove(todoList);
         _context.SaveChanges();
+
+        return NoContent();
+    }
+
+    [HttpPatch("{id:long}")]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> PatchTodoList([FromRoute] long id, [FromBody] PatchTodoListRequest request)
+    {
+        TodoList? todoList = await _context.TodoLists.FindAsync(id);
+
+        if (todoList == null)
+        {
+            return NotFound();
+        }
+
+        todoList.Name = request.Name ?? todoList.Name;
+
+        _context.Entry(todoList).State = EntityState.Modified;
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!_context.TodoLists.Any(e => e.Id == id))
+            {
+                return NotFound();
+            }
+            else
+            {
+                throw;
+            }
+        }
 
         return NoContent();
     }
