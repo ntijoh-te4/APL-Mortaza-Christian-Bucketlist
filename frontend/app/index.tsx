@@ -3,10 +3,10 @@ import { StyleSheet, View } from "react-native";
 import SearchBar from "../components/SearchBar";
 import ItemList from "../components/ItemList";
 import AddNewList from "../components/AddNewList";
-import { TItem, TItemTemplate } from "../types/item";
+import { TItem } from "../types/item";
 import { TBackendItem } from "../types/backendItem";
 
-function toDefaults(items: TItemTemplate[]): TItem[] {
+function mapItemProperties(items: TBackendItem[]): TItem[] {
   return items.map((item) => {
     return {
       ...item,
@@ -15,11 +15,19 @@ function toDefaults(items: TItemTemplate[]): TItem[] {
   });
 }
 
-async function getItems(): Promise<TItem[]> {
-  // fetching only from todolist with id = 1
-  const res = await fetch("https://localhost:7148/api/TodoLists/1/TodoItems");
-  const data = await res.json();
-  const items = toDefaults(data);
+async function getItems(todoListId: number = 1): Promise<TItem[] | void> {
+  // temp default value on todoListId
+  const response: Response = await fetch(
+    `https://localhost:7148/api/TodoLists/${todoListId}/TodoItems`,
+  );
+  if (!response.ok) {
+    // error handling if fetching fails (probably if todolist doesn't exist)
+    // check if todo list still exists otherwise delete all instances of it ?
+    return;
+  }
+
+  const backendItems: TBackendItem[] = await response.json();
+  const items: TItem[] = mapItemProperties(backendItems);
   return items;
 }
 

@@ -8,6 +8,3 @@ export type TItem = {
   isComplete: boolean;
   isVisible: boolean;
 };
-export type TItemTemplate = TItem & {
-  isVisible?: boolean;
-};
