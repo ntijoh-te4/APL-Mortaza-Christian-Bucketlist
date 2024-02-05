@@ -7,25 +7,14 @@ interface IAction {
 }
 
 interface PopupProps {
-  isOpen: boolean;
   onClose: () => void;
   actions: IAction[];
   popupTitle: string;
 }
 
-const Popup: React.FC<PopupProps> = ({
-  isOpen,
-  onClose,
-  actions,
-  popupTitle,
-}) => {
+const Popup: React.FC<PopupProps> = ({ onClose, actions, popupTitle }) => {
   return (
-    <Modal
-      transparent={true}
-      animationType="fade"
-      visible={isOpen}
-      onRequestClose={onClose}
-    >
+    <Modal transparent={true} animationType="fade" onRequestClose={onClose}>
       <View style={styles.popupContainer}>
         <View style={styles.popupStyle}>
           <Text style={styles.popupTitle}>{popupTitle}</Text>
