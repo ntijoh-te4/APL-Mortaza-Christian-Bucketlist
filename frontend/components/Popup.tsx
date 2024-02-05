@@ -1,12 +1,24 @@
 import React from "react";
-import { Modal, View, Text, Button, StyleSheet } from "react-native";
+import { Modal, View, Text, Pressable, Button, StyleSheet } from "react-native";
+
+interface IAction {
+  title: string;
+  icon: string;
+}
 
 interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
+  actions: IAction[];
+  popupTitle: string;
 }
 
-const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
+const Popup: React.FC<PopupProps> = ({
+  isOpen,
+  onClose,
+  actions,
+  popupTitle,
+}) => {
   return (
     <Modal
       transparent={true}
@@ -16,8 +28,14 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
     >
       <View style={styles.popupContainer}>
         <View style={styles.popupStyle}>
+          <Text style={styles.popupTitle}>{popupTitle}</Text>
+          {actions.map((action: IAction) => (
+            <Pressable key={action.title}>
+              <span className="material-symbols-outlined">{action.icon}</span>
+              <Text>{action.title}</Text>
+            </Pressable>
+          ))}
           <Button title="Close" onPress={onClose} />
-          <Text>This is the content of the popup!</Text>
         </View>
       </View>
     </Modal>
@@ -25,6 +43,9 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
 };
 
 const styles = StyleSheet.create({
+  popupTitle: {
+    fontSize: 32,
+  },
   popupContainer: {
     flex: 1,
     justifyContent: "center",
