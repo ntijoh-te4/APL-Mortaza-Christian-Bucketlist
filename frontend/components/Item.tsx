@@ -26,8 +26,17 @@ const Item: React.FC<ItemProps> = ({ item, onDelete }) => {
       <Pressable style={styles.kebabMenu} onPress={openPopup}>
         <span className="material-symbols-outlined">more_vert</span>
       </Pressable>
-
-      <Popup isOpen={isPopupOpen} onClose={closePopup} />
+      <Popup
+        isOpen={isPopupOpen}
+        onClose={closePopup}
+        actions={[
+          { title: "Edit", icon: "edit" },
+          { title: "Rename", icon: "send" },
+          { title: "Set deadline", icon: "calendar_month" },
+          { title: "Delete list", icon: "delete" },
+        ]}
+        popupTitle={item.title}
+      />
     </View>
   ) : null;
 };
