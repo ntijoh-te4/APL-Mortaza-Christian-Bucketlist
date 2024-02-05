@@ -22,7 +22,7 @@ const Item: React.FC<ItemProps> = ({ item, onDelete }) => {
   return item.isVisible ? (
     <View style={styles.li}>
       <Button title="X" onPress={() => onDelete(item.id)} />
-      <Text>{item.description}</Text>
+      <Text>{item.title}</Text>
       <Pressable style={styles.kebabMenu} onPress={openPopup}>
         <span className="material-symbols-outlined">more_vert</span>
       </Pressable>
