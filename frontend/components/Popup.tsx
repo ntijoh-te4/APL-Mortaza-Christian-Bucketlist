@@ -30,9 +30,9 @@ const Popup: React.FC<PopupProps> = ({
         <View style={styles.popupStyle}>
           <Text style={styles.popupTitle}>{popupTitle}</Text>
           {actions.map((action: IAction) => (
-            <Pressable key={action.title}>
+            <Pressable key={action.title} style={styles.actionStyle}>
               <span className="material-symbols-outlined">{action.icon}</span>
-              <Text>{action.title}</Text>
+              <Text style={{ fontSize: 36 }}>{action.title}</Text>
             </Pressable>
           ))}
           <Button title="Close" onPress={onClose} />
@@ -44,7 +44,7 @@ const Popup: React.FC<PopupProps> = ({
 
 const styles = StyleSheet.create({
   popupTitle: {
-    fontSize: 32,
+    fontSize: 56,
   },
   popupContainer: {
     flex: 1,
@@ -57,6 +57,12 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     elevation: 5,
+  },
+  actionStyle: {
+    display: "flex",
+    flexDirection: "row",
+    border: "solid black 2px",
+    margin: 4,
   },
 });
 

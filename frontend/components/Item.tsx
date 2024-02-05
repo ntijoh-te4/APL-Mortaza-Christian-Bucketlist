@@ -33,7 +33,7 @@ const Item: React.FC<ItemProps> = ({ item, onDelete }) => {
           { title: "Edit", icon: "edit" },
           { title: "Rename", icon: "send" },
           { title: "Set deadline", icon: "calendar_month" },
-          { title: "Delete list", icon: "delete" },
+          { title: "Delete item", icon: "delete" },
         ]}
         popupTitle={item.title}
       />
