@@ -1,27 +1,46 @@
-import { Button, Text, StyleSheet } from "react-native";
-import { FC } from "react";
+import React, { useState } from "react";
+import { Button, Text, StyleSheet, Pressable, View } from "react-native";
 import { TItem } from "../types/item";
+import Popup from "./Popup";
 
-interface Props {
+interface ItemProps {
   item: TItem;
   onDelete: (id: number) => void;
 }
 
-const Item: FC<Props> = ({ item, onDelete }) => {
+const Item: React.FC<ItemProps> = ({ item, onDelete }) => {
+  const [isPopupOpen, setPopupOpen] = useState(false);
+
+  const openPopup = () => {
+    setPopupOpen(true);
+  };
+
+  const closePopup = () => {
+    setPopupOpen(false);
+  };
+
   return item.isVisible ? (
-    <li style={styles.li}>
-      <Text>{item.description}</Text>
+    <View style={styles.li}>
       <Button title="X" onPress={() => onDelete(item.id)} />
-    </li>
+      <Text>{item.description}</Text>
+      <Pressable style={styles.kebabMenu} onPress={openPopup}>
+        <span className="material-symbols-outlined">more_vert</span>
+      </Pressable>
+
+      <Popup isOpen={isPopupOpen} onClose={closePopup} />
+    </View>
   ) : null;
 };
 
 const styles = StyleSheet.create({
   li: {
     backgroundColor: "salmon",
-    display: "flex",
+    flexDirection: "row",
     justifyContent: "space-between",
-    flexWrap: "nowrap",
+    alignItems: "center",
+  },
+  kebabMenu: {
+    position: "relative",
   },
 });
 
