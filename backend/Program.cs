@@ -10,18 +10,10 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-string? conStrNoPassword = builder.Configuration.GetConnectionString("Bucketlist");
-if (conStrNoPassword == null)
-{
-    Console.WriteLine("'ConnectionStrings.Bucketlist' is missing from 'appsettings.json'");
-    return 1;
-}
-string? dbPassword = builder.Configuration["DbPassword"];
-if (dbPassword == null)
-{
-    Console.WriteLine("run 'dotnet user-secrets set \"DbPassword\" \"[ YOUR_DATABASE_PASSWORD ]'\"");
-    return 1;
-}
+string conStrNoPassword = builder.Configuration.GetConnectionString("Bucketlist") ??
+    throw new Exception("'ConnectionStrings.Bucketlist' is missing from 'appsettings.json'");
+string dbPassword = builder.Configuration["DbPassword"] ??
+    throw new Exception("run 'dotnet user-secrets set \"DbPassword\" \"[ YOUR_DATABASE_PASSWORD ]'\"");
 string connectionString = $"{conStrNoPassword};password={dbPassword}";
 
 builder.Services.AddCors(options => options.AddPolicy(name: "development",
@@ -31,24 +23,27 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<BucketlistContext>(opt => opt.UseNpgsql(connectionString));
 
+string jwtIssuer = builder.Configuration["Jwt:Issuer"] ??
+    throw new Exception("'Jwt.Issuer' is missing from appsettings.json");
+string jwtAudience = builder.Configuration["Jwt:Audience"] ??
+    throw new Exception("'Jwt.Audience' is missing from appsettings.json");
+string jwtKey = builder.Configuration["Jwt:Key"] ??
+    throw new Exception("'Jwt.Key' is missing from appsettings.json");
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(o =>
+}).AddJwtBearer(o => o.TokenValidationParameters = new TokenValidationParameters
 {
-    o.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidIssuer = builder.Configuration["Jwt:Issuer"],
-        ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = false,
-        ValidateIssuerSigningKey = true
-    };
-
+    ValidIssuer = jwtIssuer,
+    ValidAudience = jwtAudience,
+    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
+    ValidateIssuer = true,
+    ValidateAudience = true,
+    ValidateLifetime = false,
+    ValidateIssuerSigningKey = true
 });
 builder.Services.AddAuthorization();
 
@@ -60,11 +55,7 @@ app.MapPost("/security/createToken",
 {
     if (user.UserName == "joydip" && user.Password == "joydip123")
     {
-        var issuer = builder.Configuration["Jwt:Issuer"];
-        var audience = builder.Configuration["Jwt:Audience"];
-        var key = Encoding.ASCII.GetBytes
-        (builder.Configuration["Jwt:Key"]);
-        var tokenDescriptor = new SecurityTokenDescriptor
+        SecurityTokenDescriptor tokenDescriptor = new()
         {
             Subject = new ClaimsIdentity(new[]
             {
@@ -75,16 +66,16 @@ app.MapPost("/security/createToken",
                 Guid.NewGuid().ToString())
             }),
             Expires = DateTime.UtcNow.AddMinutes(5),
-            Issuer = issuer,
-            Audience = audience,
+            Issuer = jwtIssuer,
+            Audience = jwtAudience,
             SigningCredentials = new SigningCredentials
-            (new SymmetricSecurityKey(key),
+            (new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtKey)),
             SecurityAlgorithms.HmacSha512Signature)
         };
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        var jwtToken = tokenHandler.WriteToken(token);
-        var stringToken = tokenHandler.WriteToken(token);
+        JwtSecurityTokenHandler tokenHandler = new();
+        SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
+        string jwtToken = tokenHandler.WriteToken(token);
+        string stringToken = tokenHandler.WriteToken(token);
         return Results.Ok(stringToken);
     }
     return Results.Unauthorized();
