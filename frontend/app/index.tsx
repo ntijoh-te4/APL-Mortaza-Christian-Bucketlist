@@ -29,7 +29,7 @@ async function getTodoListPreviews(): Promise<TList[]> {
 }
 
 // temp default value on todoListId
-async function getItems(todoListId: number = 1): Promise<TItem[] | null> {
+async function getTodoItems(todoListId: number = 1): Promise<TItem[] | null> {
   const response: Response = await fetch(
     `https://localhost:7148/api/TodoLists/${todoListId}/TodoItems`,
   );
@@ -53,7 +53,7 @@ export default function App() {
 
   useEffect(() => {
     const fetchInitialItems = async () => {
-      const initialItems: TItem[] | null = await getItems();
+      const initialItems: TItem[] | null = await getTodoItems();
       if (initialItems === null) {
         return;
       }
