@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Button, Text, StyleSheet, Pressable, View } from "react-native";
-import { TItem } from "../types/item";
+import { TTodoItem } from "../types/todoItem";
 import Popup from "./Popup";
 
 interface ItemProps {
-  item: TItem;
+  item: TTodoItem;
   onDelete: (id: number) => void;
 }
 

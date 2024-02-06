@@ -3,12 +3,10 @@ import { StyleSheet, View } from "react-native";
 import SearchBar from "../components/SearchBar";
 import ItemList from "../components/ItemList";
 import AddNewList from "../components/AddNewList";
-import { TItem } from "../types/item";
-import { TList } from "../types/list";
-import { TBackendItem } from "../types/backendItem";
-import { TBackendList } from "../types/backendList";
+import { TTodoItem, TTodoItemResponse } from "../types/todoItem";
+import { TTodoList, TTodoListPreviewResponse } from "../types/todoList";
 
-async function getTodoListPreviews(): Promise<TList[]> {
+async function getTodoListPreviews(): Promise<TTodoList[]> {
   const response: Response = await fetch(
     `https://localhost:7148/api/TodoLists`,
   );
@@ -16,9 +14,9 @@ async function getTodoListPreviews(): Promise<TList[]> {
     return [];
   }
 
-  const backendListPreviews: TBackendList[] = await response.json();
+  const backendListPreviews: TTodoListPreviewResponse[] = await response.json();
 
-  const listPreviews: TList[] = backendListPreviews.map((list) => {
+  const listPreviews: TTodoList[] = backendListPreviews.map((list) => {
     return {
       ...list,
       items: null,
@@ -29,7 +27,9 @@ async function getTodoListPreviews(): Promise<TList[]> {
 }
 
 // temp default value on todoListId
-async function getTodoItems(todoListId: number = 1): Promise<TItem[] | null> {
+async function getTodoItems(
+  todoListId: number = 1,
+): Promise<TTodoItem[] | null> {
   const response: Response = await fetch(
     `https://localhost:7148/api/TodoLists/${todoListId}/TodoItems`,
   );
@@ -39,21 +39,23 @@ async function getTodoItems(todoListId: number = 1): Promise<TItem[] | null> {
     return null;
   }
 
-  const backendItems: TBackendItem[] = await response.json();
-  const items: TItem[] = backendItems.map((item) => ({
-    ...item,
-    isVisible: true,
-  }));
+  const backendItems: TTodoItemResponse[] = await response.json();
+  const items: TTodoItem[] = backendItems.map(
+    (item: TTodoItemResponse): TTodoItem => ({
+      ...item,
+      isVisible: true,
+    }),
+  );
   return items;
 }
 
 export default function App() {
-  const [items, setItems] = useState<TItem[]>([]);
+  const [items, setItems] = useState<TTodoItem[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchInitialItems = async () => {
-      const initialItems: TItem[] | null = await getTodoItems();
+      const initialItems: TTodoItem[] | null = await getTodoItems();
       if (initialItems === null) {
         return;
       }
@@ -63,9 +65,12 @@ export default function App() {
     fetchInitialItems();
   }, []); // Empty dependency array ensures the effect runs only once on mount
 
-  async function addItem(description: string): Promise<void> {
+  async function addItem(
+    description: string,
+    todoListId: number = 1,
+  ): Promise<void> {
     const postNewItem: Response = await fetch(
-      "https://localhost:7148/api/TodoItems",
+      `https://localhost:7148/api/TodoItems/${todoListId}/TodoItems`,
       {
         method: "POST",
         mode: "cors",
@@ -80,23 +85,24 @@ export default function App() {
       },
     );
 
-    if (postNewItem.ok) {
-      const backendItem: TBackendItem = await postNewItem.json();
-      const newItem: TItem = {
-        id: backendItem.id,
-        title: backendItem.title,
-        description: backendItem.description,
-        createdAt: backendItem.createdAt,
-        updatedAt: backendItem.updatedAt,
-        deadline: backendItem.deadline,
-        isComplete: backendItem.isComplete,
-        isVisible: true,
-      };
-      setItems([...items, newItem]);
+    if (!postNewItem.ok) {
       return;
     }
 
+    const backendItem: TTodoItemResponse = await postNewItem.json();
+    const newItem: TTodoItem = {
+      id: backendItem.id,
+      title: backendItem.title,
+      description: backendItem.description,
+      createdAt: backendItem.createdAt,
+      updatedAt: backendItem.updatedAt,
+      deadline: backendItem.deadline,
+      isComplete: backendItem.isComplete,
+      isVisible: true,
+    };
+    setItems([...items, newItem]);
     console.log(await postNewItem.json());
+    return;
   }
 
   async function deleteItem(id: number): Promise<void> {

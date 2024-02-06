@@ -47,8 +47,8 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
 
     [EnableCors]
     [HttpPost]
-    [ProducesResponseType(typeof(PostTodoListResponse), StatusCodes.Status201Created)]
-    public async Task<ActionResult<PostTodoListResponse>> PostTodoList([FromBody] PostTodoListRequest request)
+    [ProducesResponseType(typeof(TodoListPreviewResponse), StatusCodes.Status201Created)]
+    public async Task<ActionResult<TodoListPreviewResponse>> PostTodoList([FromBody] PostTodoListRequest request)
     {
         TodoList todoList = new()
         {
@@ -58,13 +58,13 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
         _context.TodoLists.Add(todoList);
         await _context.SaveChangesAsync();
 
-        PostTodoListResponse createdResourceResponse = new(
+        TodoListPreviewResponse createdResourceResponse = new(
             Id: todoList.Id,
             Name: todoList.Name
         );
 
         return CreatedAtAction(
-            actionName: nameof(GetTodoListPreviews),
+            actionName: nameof(GetTodoListPreview),
             routeValues: new { id = todoList.Id },
             value: createdResourceResponse
         );
@@ -148,7 +148,7 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
     [EnableCors]
     [HttpPost("{id:long}/TodoItems")]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(typeof(PostTodoItemResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(TodoItemResponse), StatusCodes.Status201Created)]
     public async Task<IActionResult> PostTodoItem([FromRoute] long id, [FromBody] PostTodoItemRequest request)
     {
         TodoList? todoList = await _context.TodoLists.FindAsync(id);
@@ -168,13 +168,14 @@ public class TodoListsController(BucketlistContext context) : ControllerBase
         todoList.TodoItems.Add(todoItem);
         await _context.SaveChangesAsync();
 
-        PostTodoItemResponse createdResourceResponse = new(
+        TodoItemResponse createdResourceResponse = new(
             Id: todoItem.Id,
             Title: todoItem.Title,
             Description: todoItem.Description,
-            IsComplete: todoItem.IsComplete,
+            CreatedAt: todoItem.CreatedAt,
+            UpdatedAt: todoItem.UpdatedAt,
             Deadline: todoItem.Deadline,
-            TodoListId: todoList.Id
+            IsComplete: todoItem.IsComplete
         );
 
         return CreatedAtAction(

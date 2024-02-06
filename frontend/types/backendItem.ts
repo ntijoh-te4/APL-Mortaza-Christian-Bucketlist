@@ -1,4 +1,4 @@
-export type TBackendItem = {
+export type TTodoItemResponse = {
   id: number;
   title: string;
   description: string;

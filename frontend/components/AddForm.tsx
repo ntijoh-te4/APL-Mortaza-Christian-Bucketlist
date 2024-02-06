@@ -2,7 +2,7 @@ import { BaseSyntheticEvent, FC, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 
 interface Props {
-  onAdd: (description: string) => void;
+  onAdd: (description: string, todoListId?: number) => void;
 }
 
 const AddForm: FC<Props> = ({ onAdd }) => {

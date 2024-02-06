@@ -9,14 +9,14 @@ import {
   Pressable,
   TextInput,
 } from "react-native";
-import { TItem } from "../types/item";
+import { TTodoItem } from "../types/todoItem";
 import { FC, useState, useEffect } from "react";
 
 interface Props {
-  items: TItem[];
-  setItems: (items: TItem[]) => void;
+  items: TTodoItem[];
+  setItems: (items: TTodoItem[]) => void;
   onDelete: (id: number) => void;
-  onAdd: (description: string) => void;
+  onAdd: (description: string, todoListId?: number) => void;
   searchTerm: string;
 }
 
@@ -52,10 +52,10 @@ const ItemList: FC<Props> = ({
   }, [searchTerm]);
 
   useEffect(() => {
-    filteredItems = items.filter((item: TItem) => item.isVisible);
+    filteredItems = items.filter((item: TTodoItem) => item.isVisible);
   }, [items]);
 
-  let filteredItems = items.filter((item: TItem) => item.isVisible);
+  let filteredItems = items.filter((item: TTodoItem) => item.isVisible);
 
   function toggleOptionsMenu() {
     setOptionsMenuVisible(!optionsMenuVisible);
@@ -100,8 +100,8 @@ const ItemList: FC<Props> = ({
         <AddForm onAdd={onAdd} />
         <FlatList
           data={filteredItems}
-          keyExtractor={(item: TItem) => item.id.toString()}
-          renderItem={({ item }: { item: TItem }) => (
+          keyExtractor={(item: TTodoItem) => item.id.toString()}
+          renderItem={({ item }: { item: TTodoItem }) => (
             <Item key={item.id} item={item} onDelete={onDelete} />
           )}
         />

@@ -6,23 +6,14 @@ public record TodoItemResponse(
     string Description,
     DateTime CreatedAt,
     DateTime UpdatedAt,
-    DateTime? Deadline,
-    bool IsComplete = false
+    DateTime Deadline,
+    bool IsComplete
 );
 
 public record PostTodoItemRequest(
     string Title,
     DateTime? Deadline,
-    string? Description = ""
-);
-
-public record PostTodoItemResponse(
-    long Id,
-    string Title,
-    string Description,
-    bool IsComplete,
-    DateTime Deadline,
-    long TodoListId
+    string? Description
 );
 
 public record PatchTodoItemRequest(
