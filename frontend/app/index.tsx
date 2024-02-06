@@ -4,30 +4,46 @@ import SearchBar from "../components/SearchBar";
 import ItemList from "../components/ItemList";
 import AddNewList from "../components/AddNewList";
 import { TItem } from "../types/item";
+import { TList } from "../types/list";
 import { TBackendItem } from "../types/backendItem";
+import { TBackendList } from "../types/backendList";
 
-function mapItemProperties(items: TBackendItem[]): TItem[] {
-  return items.map((item) => {
+async function getTodoListPreviews(): Promise<TList[]> {
+  const response: Response = await fetch(
+    `https://localhost:7148/api/TodoLists`,
+  );
+  if (!response.ok) {
+    return [];
+  }
+
+  const backendListPreviews: TBackendList[] = await response.json();
+
+  const listPreviews: TList[] = backendListPreviews.map((list) => {
     return {
-      ...item,
-      isVisible: true,
+      ...list,
+      items: null,
     };
   });
+
+  return listPreviews;
 }
 
-async function getItems(todoListId: number = 1): Promise<TItem[] | void> {
-  // temp default value on todoListId
+// temp default value on todoListId
+async function getItems(todoListId: number = 1): Promise<TItem[] | null> {
   const response: Response = await fetch(
     `https://localhost:7148/api/TodoLists/${todoListId}/TodoItems`,
   );
   if (!response.ok) {
     // error handling if fetching fails (probably if todolist doesn't exist)
     // check if todo list still exists otherwise delete all instances of it ?
-    return;
+    return null;
   }
 
   const backendItems: TBackendItem[] = await response.json();
-  const items: TItem[] = mapItemProperties(backendItems);
+  const items: TItem[] = backendItems.map((item) => ({
+    ...item,
+    isVisible: true,
+  }));
   return items;
 }
 
@@ -37,7 +53,10 @@ export default function App() {
 
   useEffect(() => {
     const fetchInitialItems = async () => {
-      const initialItems = await getItems();
+      const initialItems: TItem[] | null = await getItems();
+      if (initialItems === null) {
+        return;
+      }
       setItems(initialItems);
     };
 
