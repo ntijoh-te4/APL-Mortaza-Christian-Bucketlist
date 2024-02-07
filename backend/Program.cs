@@ -92,7 +92,7 @@ if (args.Length == 1)
     }
     else if (args.Contains("seed"))
     {
-        DatabaseInitializer.Seed(app.Services);
+        await DatabaseInitializer.Seed(app.Services);
         return 0;
     }
 }
