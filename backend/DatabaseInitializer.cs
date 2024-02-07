@@ -52,6 +52,12 @@ public static class DatabaseInitializer
             new TodoItem { Description = "Create more todo items", IsComplete = true, TodoList = todoLists[0] }
         ];
         context.TodoItems.AddRange(todoItems);
+        User[] users = [
+            new User { UserName = "WhoPaintedTheMonaLisa", Password = "DaVinky" },
+            new User { UserName = "ZlatanIbrahimovic", Password = "HelenasMat" },
+            new User { UserName = "Yalla", Password = "Habibi" },
+        ];
+        context.Users.AddRange(users);
         await context.SaveChangesAsync();
     }
 }
