@@ -9,10 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+var config = builder.Configuration;
 
-string conStrNoPassword = builder.Configuration.GetConnectionString("Bucketlist") ??
+string conStrNoPassword = config.GetConnectionString("Bucketlist") ??
     throw new Exception("'ConnectionStrings.Bucketlist' is missing from 'appsettings.json'");
-string dbPassword = builder.Configuration["DbPassword"] ??
+string dbPassword = config["DbPassword"] ??
     throw new Exception("run 'dotnet user-secrets set \"DbPassword\" \"[ YOUR_DATABASE_PASSWORD ]'\"");
 string connectionString = $"{conStrNoPassword};password={dbPassword}";
 
@@ -23,11 +24,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<BucketlistContext>(opt => opt.UseNpgsql(connectionString));
 
-string jwtIssuer = builder.Configuration["Jwt:Issuer"] ??
+string jwtIssuer = config["Jwt:Issuer"] ??
     throw new Exception("'Jwt.Issuer' is missing from appsettings.json");
-string jwtAudience = builder.Configuration["Jwt:Audience"] ??
+string jwtAudience = config["Jwt:Audience"] ??
     throw new Exception("'Jwt.Audience' is missing from appsettings.json");
-string jwtKey = builder.Configuration["Jwt:Key"] ??
+string jwtKey = config["Jwt:Key"] ??
     throw new Exception("'Jwt.Key' is missing from appsettings.json");
 
 builder.Services.AddAuthentication(options =>
@@ -42,7 +43,7 @@ builder.Services.AddAuthentication(options =>
     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey)),
     ValidateIssuer = true,
     ValidateAudience = true,
-    ValidateLifetime = false,
+    ValidateLifetime = true,
     ValidateIssuerSigningKey = true
 });
 builder.Services.AddAuthorization();
